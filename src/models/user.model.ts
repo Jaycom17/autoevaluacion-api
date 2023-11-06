@@ -7,20 +7,22 @@ export class User {
 
     constructor() {}
 
-    public async singIn(userUser: string, userPassword: string) {
+    public async login(userEmail: string, _userPassword: string) {
         // Consultar la base de datos para obtener el usuario
         const [rows] = await pool.query<RowDataPacket[]>(
-            'SELECT * FROM USUARIO WHERE USU_CORREO = ? AND USU_CONTRASENA = ?',
-            [userUser, userPassword]
+            'SELECT usu_correo, usu_contrasena FROM USUARIO WHERE USU_CORREO = ?',
+            [userEmail]
         );
 
+        console.log(rows);
+
         // Verificar si se encontró un usuario
-        if (rows.length > 0) {
+        if (rows.length == 1) {
             const userData = rows[0];
 
             // Generar un token JWT
             const token = jwt.sign({
-                user: userUser
+                user: userEmail
             }, 'secret', {
                 expiresIn: '1h'
             });
