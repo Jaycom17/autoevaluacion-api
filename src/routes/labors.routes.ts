@@ -1,9 +1,15 @@
 import { Router } from "express";
 
-import { getLabors } from "../controllers/labor.controllers";
+import { createLabor, showLabor, updateLabor, deleteLabor } from "../controllers/labor.controllers";
 
 const laborRouter = Router();
 
-laborRouter.get("/labor", getLabors);
+laborRouter.post("/labor", createLabor);
+
+laborRouter.get("/labor/:id", showLabor);
+
+laborRouter.put("/labor", updateLabor);
+
+laborRouter.delete("/labor/:id", deleteLabor);
 
 export default laborRouter;
