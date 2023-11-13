@@ -46,14 +46,11 @@ export class Period {
     }
     public async updatePeriod(perId: number, perName: string, perInitDate: string, perFinishDate: string) {
         try {
-            const [rows] = await pool.query<RowDataPacket[]>(
+            const [resul] = await pool.query<ResultSetHeader>(
                 'UPDATE PERIODO SET PER_NOMBRE = ?, PER_FECHAINICIO = ?, PER_FECHAFIN = ? WHERE PER_ID = ?',
                 [perName, perInitDate, perFinishDate, perId]
             );
-            if(rows.length > 0){
-                return true;
-            }
-            return false;
+            return resul.affectedRows!=0;
         } catch (error) {
             return error;
         }

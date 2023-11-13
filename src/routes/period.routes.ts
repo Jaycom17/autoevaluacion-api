@@ -5,8 +5,8 @@ import { createPeriod, getPeriodList, searchPeriod, updatePeriod } from "../cont
 const periodRouter = Router();
 
 periodRouter.post("/period", createPeriod);//Create
-periodRouter.get("/period/:id", getPeriodList);//Read
-periodRouter.get("/period", searchPeriod);//Read 2
+periodRouter.get("/period/:id", searchPeriod);//Read 2
+periodRouter.get("/period", getPeriodList);//Read
 periodRouter.put("/period", updatePeriod);//Update
 
 export default periodRouter;
