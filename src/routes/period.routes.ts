@@ -1,9 +1,12 @@
 import { Router } from "express";
 
-import { getPeriods } from "../controllers/period.controllers";
+import { createPeriod, getPeriodList, searchPeriod, updatePeriod } from "../controllers/period.controllers";
 
 const periodRouter = Router();
 
-periodRouter.get("/period", getPeriods);
+periodRouter.post("/period", createPeriod);//Create
+periodRouter.get("/period/:id", getPeriodList);//Read
+periodRouter.get("/period", searchPeriod);//Read 2
+periodRouter.put("/period", updatePeriod);//Update
 
 export default periodRouter;
