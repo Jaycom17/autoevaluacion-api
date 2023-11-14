@@ -34,11 +34,33 @@ export class Evaluation {
         }
 
     }
-    public async getEvaluation(evaId: number) {
+    public async checkEvaluation(evaId: number) {
         const [rows] = await pool.query<RowDataPacket[]>(
             'Select * FROM EVALUACION WHERE eva_Id = ?',
             [evaId]
         );
         return rows[0];
+    }
+    public async updateEvaluation(evaId: number, evaScore: number, evaResult: string) {
+        try {
+            const [result] = await pool.query<ResultSetHeader>(
+                'UPDATE EVALUACION SET EVA_PUNTAJE = ?, EVA_RESULTADO = ? WHERE EVA_ID = ?',
+                [evaScore, evaResult, evaId]
+            );  
+            return result.affectedRows!=0;
+        } catch (error) {
+            console.error(error);
+            return false;
+        }
+        
+    }
+    public async getEvaluation() {
+        try {
+            const [rows] = await pool.query('SELECT * FROM evaluacion');
+            return rows;
+        } catch (error) {
+            console.error('Error al obtener las evaluaciones:', error);
+            throw error;
+        }
     }
 }

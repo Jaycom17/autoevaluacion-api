@@ -1,10 +1,15 @@
 import { Router } from "express";
-import { getEvaluation, createEvaluation, deleteEvaluation } from "../controllers/evaluation.controllers";
+import { checkEvaluation, createEvaluation, deleteEvaluation, updateEvaluation ,getEvaluation } from "../controllers/evaluation.controllers";
 
 const evaluationRouter = Router();
 
-evaluationRouter.get("/evaluation/:id", getEvaluation);
+evaluationRouter.get("/evaluation/:id", checkEvaluation);
 evaluationRouter.delete("/evaluation/:id", deleteEvaluation);
 evaluationRouter.post("/evaluation", createEvaluation);
+evaluationRouter.put("/evaluation", updateEvaluation);
+evaluationRouter.get("/evaluation", getEvaluation);
+
+
+
 
 export default evaluationRouter;
