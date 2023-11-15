@@ -1,15 +1,17 @@
 import { Router } from "express";
 
-import { createLabor, showLabor, updateLabor, deleteLabor } from "../controllers/labor.controllers";
+import { createLabor, showLaborByID, showLaborList, updateLabor, deleteLabor } from "../controllers/labor.controllers";
 
 const laborRouter = Router();
 
-laborRouter.post("/labor", createLabor);
+laborRouter.post("/labor", createLabor); //Create
 
-laborRouter.get("/labor/:id", showLabor);
+laborRouter.get("/labor/:id", showLaborByID); //GetByID
 
-laborRouter.put("/labor", updateLabor);
+laborRouter.get("/labor", showLaborList) //GetAll
 
-laborRouter.delete("/labor/:id", deleteLabor);
+laborRouter.put("/labor", updateLabor); //Update
+
+laborRouter.delete("/labor/:id", deleteLabor); //Delete
 
 export default laborRouter;
