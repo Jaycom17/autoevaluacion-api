@@ -23,7 +23,7 @@ export class UseRol {
             }
             return null;
         } catch (error) {
-            return error;
+            return null;
         }
     }
 }
