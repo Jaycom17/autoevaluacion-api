@@ -18,7 +18,7 @@ export class Evaluation extends Article{
 
             if(result.affectedRows==0){return false;}
             
-            this.notify(usrId);
+            this.notify("createEvaluation");
 
             return true;
         } catch (err) {
@@ -34,7 +34,11 @@ export class Evaluation extends Article{
                 'Delete from EVALUACION WHERE eva_Id = ?',
                 [evaId]
             )
-            return result.affectedRows!=0;
+            if(result.affectedRows==0){return false;}
+            
+            this.notify("deleteEvaluation");
+
+            return true;
         } catch (err) {
             // Manejar el error
             console.error(err);

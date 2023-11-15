@@ -4,7 +4,9 @@ import { pool } from "../db/database";
 import { RowDataPacket } from "mysql2";
 import { Observer } from "./observer";
 
-export class User implements Observer{
+import { sendEmailToProfessor } from "./util/sendEmail";
+
+export class User implements Observer {
   constructor() {}
 
   public async login(userEmail: string, userPassword: string) {
@@ -45,14 +47,27 @@ export class User implements Observer{
     }
   }
 
-  public async notify(user: any) {
-      try {
-        const [rows] = await pool.query<RowDataPacket[]>(
-          "SELECT USR_IDENTIFICACION, usu_correo FROM USUARIO inner join USEROL on USUARIO.USR_IDENTIFICACION = USEROL.USR_IDENTIFICACION inner join ROL on USEROL.ROL_ID = ROL.ROL_ID"
-        );
-      } catch (error) {
-        
+  public async notify(action: string) {
+    try {
+      switch (action) {
+        case "createEvaluation":
+          const [rows] = await pool.query<RowDataPacket[]>(
+            "SELECT usu_correo FROM USUARIO inner join userol on userol.USR_IDENTIFICACION = usuario.USR_IDENTIFICACION inner join rol on userol.rol_id = rol.rol_id WHERE rol_description = docente",
+          );
+          
+          rows.forEach((element: any) => {
+            sendEmailToProfessor(element);
+          });
+
+          break;
+
+        case "deleteEvaluation":
+
+          break;
+
+        default:
+          break;
       }
+    } catch (error) {}
   }
-  
 }
