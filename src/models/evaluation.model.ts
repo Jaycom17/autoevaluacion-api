@@ -6,11 +6,11 @@ import { Labor, Period, User, Rol } from '../types';
 
 export class Evaluation {
     constructor() { }
-    public async createEvaluation(evaId: number, evaState: string, evaScore: number, evaResult: string, evaPeriod: Period, evaLabor: Labor, usrId: User, rolId: Rol) {
+    public async createEvaluation(evaId: number, evaState: string, _evaScore: number, _evaResult: string, evaPeriod: Period, evaLabor: Labor, usrId: User, rolId: Rol) {
         try {
             const [result] = await pool.query<ResultSetHeader>(
                 'INSERT into EVALUACION values(?,?,?,?,?,?,?,?)',
-                [evaId, evaLabor, evaPeriod, usrId, rolId, evaState, evaScore, evaResult]
+                [evaId, evaLabor, evaPeriod, usrId, rolId, evaState, _evaScore, _evaResult]
             );
             return result.affectedRows!=0;
         } catch (err) {

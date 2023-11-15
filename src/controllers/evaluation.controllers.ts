@@ -5,8 +5,8 @@ import { Evaluation } from "../models/evaluation.model";
 const EvaluationModel = new Evaluation();
 
 export const createEvaluation = async (req: Request, res: Response) => {
-    const { evaId, evaState, evaScore, evaResult, evaPeriod, evaLabor ,usrId,rolId} = req.body;
-    const evaluation = await EvaluationModel.createEvaluation(evaId, evaState, evaScore, evaResult, evaPeriod,evaLabor,usrId,rolId);
+    const { evaId, evaState, _evaScore, _evaResult, evaPeriod, evaLabor ,usrId,rolId} = req.body;
+    const evaluation = await EvaluationModel.createEvaluation(evaId, evaState, _evaScore, _evaResult, evaPeriod,evaLabor,usrId,rolId);
     res.json(evaluation).status(201);
 }
 export const deleteEvaluation = async (req: Request, res: Response) => {
