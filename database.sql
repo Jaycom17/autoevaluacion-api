@@ -65,13 +65,13 @@ create table ROL
 /*==============================================================*/
 /* Table: TIPOLABOR                                             */
 /*==============================================================*/
-create table TIPOLABOR
-(
-   TL_ID                numeric(8,0) not null,
-   TL_CODIGO            varchar(3),
-   TL_DESCRIPCION       varchar(50),
-   primary key (TL_ID)
-);
+   create table TIPOLABOR
+   (
+      TL_ID                numeric(8,0) not null,
+      TL_CODIGO            varchar(3),
+      TL_DESCRIPCION       varchar(50),
+      primary key (TL_ID)
+   );
 
 /*==============================================================*/
 /* Table: USEROL                                                */
