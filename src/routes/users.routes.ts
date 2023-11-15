@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { userLogin, userLogOut } from "../controllers/evaluationUser.controller";
+import { userLogin, userLogOut } from "../controllers/evaluationUser.controllers";
 
 import { auth } from "../middlewares/auth.middleware";
 

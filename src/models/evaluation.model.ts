@@ -2,14 +2,8 @@
 import { pool } from '../db/database'
 import { ResultSetHeader, RowDataPacket } from 'mysql2';
 import { Labor, Period, User, Rol } from '../types';
-
-export class Evaluation {
-    constructor() { }
-
-import { pool } from '../db/database'
-import { ResultSetHeader, RowDataPacket } from 'mysql2';
-import { Labor, Period, User, Rol } from '../types';
 import { Article } from './observer';
+
 
 export class Evaluation extends Article{
     
@@ -44,6 +38,8 @@ export class Evaluation extends Article{
                 'Delete from EVALUACION WHERE eva_Id = ?',
                 [evaId]
             )
+
+            return result.affectedRows!=0;
 
         } catch (err) {
             // Manejar el error
@@ -84,7 +80,5 @@ export class Evaluation extends Article{
             throw error;
         }
     }
-}
-
 }
 

@@ -1,13 +1,15 @@
 import { Router } from "express";
-import { checkEvaluation, createEvaluation, deleteEvaluation, updateEvaluation ,getEvaluation } from "../controllers/evaluation.controllers";
+import { checkEvaluation, createEvaluation, deleteEvaluation, updateEvaluation ,getEvaluation } from "../controllers/evaluationUser.controllers";
+
+import { auth, authCordinator } from "../middlewares/auth.middleware";
 
 const evaluationRouter = Router();
 
-evaluationRouter.get("/evaluation/:id", checkEvaluation);
-evaluationRouter.delete("/evaluation/:id", deleteEvaluation);
-evaluationRouter.post("/evaluation", createEvaluation);
-evaluationRouter.put("/evaluation", updateEvaluation);
-evaluationRouter.get("/evaluation", getEvaluation);
+evaluationRouter.get("/evaluation/:id",auth, checkEvaluation);
+evaluationRouter.delete("/evaluation/:id",authCordinator, deleteEvaluation);
+evaluationRouter.post("/evaluation",authCordinator, createEvaluation);
+evaluationRouter.put("/evaluation",auth, updateEvaluation);
+evaluationRouter.get("/evaluation",auth, getEvaluation);
 
 
 
