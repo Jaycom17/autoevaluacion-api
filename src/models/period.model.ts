@@ -11,7 +11,7 @@ export class Period {
             );
             return resul.affectedRows!=0;
         } catch (error) {
-            return error;
+            return null;
         }
     }
     public async searchPeriod(perId: number) {
@@ -29,7 +29,7 @@ export class Period {
             }
             return null;
         } catch (error) {
-            return error;
+            return null;
         }
 
     }
@@ -41,7 +41,7 @@ export class Period {
             );
             return rows;
         } catch (error) {
-            return error;
+            return null;
         }
     }
     public async updatePeriod(perId: number, perName: string, perInitDate: string, perFinishDate: string) {
@@ -52,7 +52,7 @@ export class Period {
             );
             return resul.affectedRows!=0;
         } catch (error) {
-            return error;
+            return null;
         }
     }
 }
