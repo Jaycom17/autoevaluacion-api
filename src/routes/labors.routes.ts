@@ -1,12 +1,12 @@
 import { Router } from "express";
 
-import { createLabor, showLaborByID, showLaborList, updateLabor, deleteLabor } from "../controllers/labor.controllers";
+import { createLabor, showLaborByName, showLaborList, updateLabor, deleteLabor } from "../controllers/labor.controllers";
 
 const laborRouter = Router();
 
 laborRouter.post("/labor", createLabor); //Create
 
-laborRouter.get("/labor/:id", showLaborByID); //GetByID
+laborRouter.get("/labor/:name", showLaborByName); //GetByName
 
 laborRouter.get("/labor", showLaborList) //GetAll
 
