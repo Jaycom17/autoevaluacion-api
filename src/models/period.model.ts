@@ -62,7 +62,7 @@ export class Period {
                 'DELETE FROM PERIODO WHERE PER_ID = ?',
                 [perId]
             );       
-            return rows.affectedRows != 0
+            return rows.affectedRows != 0;
         } catch (error) {
             return null;
         }
