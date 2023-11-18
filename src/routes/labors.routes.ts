@@ -1,13 +1,19 @@
 import { Router } from "express";
 
-import { createLabor, showLaborByID, showLaborList, updateLabor, deleteLabor } from "../controllers/labor.controllers";
+import { createLabor, showLaborByName, showLaborList, updateLabor, deleteLabor } from "../controllers/labor.controllers";
 
 import { authCordinator } from "../middlewares/auth.middleware";
 
 const laborRouter = Router();
 
 
+<<<<<<< HEAD
 laborRouter.post("/labor", authCordinator, createLabor); //Create
+=======
+laborRouter.get("/labor/:name", showLaborByName); //GetByName
+
+laborRouter.post("/labor",authCordinator, createLabor); //Create
+>>>>>>> d1efe425fccca582e5ea831abaac5c5961074ba6
 
 laborRouter.get("/labor/:id", authCordinator, showLaborByID); //GetByID
 

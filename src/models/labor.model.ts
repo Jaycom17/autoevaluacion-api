@@ -1,37 +1,38 @@
 import { pool } from '../db/database'
 import { ResultSetHeader, RowDataPacket } from 'mysql2';
 
+import { laborDictionary } from '../config';
+
 export class Labor {
 
     constructor() {}
 
-    public async createLabor(labId: number, labTypeId: number, labName: string, labTime: number) {
+    public async createLabor(labId: number, labType: string, labName: string, labTime: number) {
         // Insertar en la tabla de datos
         try { 
+            const labTypeId = laborDictionary[labType]
             const [result] = await pool.query<ResultSetHeader>(
                 'INSERT INTO LABOR VALUES (?,?,?,?)',
                 [labId, labTypeId, labName, labTime]
             );   
             return result.affectedRows!=0;
         } catch (error) {
-            return error;
+            return null;
         }
     }
 
-    public async showLaborByID(labId: number){
+    public async showLaborByName(labName: string){
         try{
-            const [rows] = await pool.query<RowDataPacket[]>(
-                'SELECT * FROM LABOR WHERE LAB_ID = ?',
-                [labId] 
+            const [row] = await pool.query<RowDataPacket[]>(
+                'SELECT * FROM LABOR WHERE LAB_NOMBRE = ?',
+                [labName] 
             );
-            if(rows.length == 1){
-                const laborData = rows[0];
-                //Retornar el token con lis datos del Labor
-                return laborData;
+            if(row.length == 0){
+                return false;
             }
-            return null;
+            return row[0];
         } catch (error){
-            return error
+            return null;
         }
     }
 
@@ -40,21 +41,25 @@ export class Labor {
             const [rows] = await pool.query<RowDataPacket[]>(
                 'SELECT * FROM LABOR'
             );
+            if(rows.length == 0){
+                return false;
+            }
             return rows;
         } catch (error){
-            return error;
+            return null;
         }
     }
 
-    public async updateLabor(labId: number, labType: number, labName: string, labTime: number){
+    public async updateLabor(labId: number, labType: string, labName: string, labTime: number){
         try {
+            const labTypeId = laborDictionary[labType]
             const [result] = await pool.query<ResultSetHeader>(
                 'UPDATE LABOR SET TL_ID = ?, LAB_NOMBRE = ?, LAB_HORAS = ? WHERE LAB_ID = ?',
-                [labType, labName, labTime, labId]
+                [labTypeId, labName, labTime, labId]
             );
             return result.affectedRows != 0;
         } catch (error) {
-            return error;
+            return null;
         }
     }
 
@@ -66,7 +71,7 @@ export class Labor {
             );       
             return rows.affectedRows != 0
         } catch (error) {
-            return error
+            return null;
         }
     }
 }
