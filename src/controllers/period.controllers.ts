@@ -28,3 +28,9 @@ export const updatePeriod = async (req: Request, res: Response) => {
     const period = await PeriodModel.updatePeriod(per_id, per_nombre, per_fechainicio, per_fechafin);
     res.json(period).status(200);
 }
+
+export const deletePeriod = async (req: Request, res: Response) => {
+    const perId : number = parseInt(req.params.id);
+    const period = await PeriodModel.deletePeriod(perId);
+    res.json(period).status(200);
+}

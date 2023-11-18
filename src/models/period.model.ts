@@ -55,4 +55,16 @@ export class Period {
             return null;
         }
     }
+
+    public async deletePeriod(perId: number){
+        try {
+            const [rows] = await pool.query<ResultSetHeader>(
+                'DELETE FROM PERIODO WHERE PER_ID = ?',
+                [perId]
+            );       
+            return rows.affectedRows != 0;
+        } catch (error) {
+            return null;
+        }
+    }
 }
