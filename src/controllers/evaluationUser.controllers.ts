@@ -25,6 +25,22 @@ export const userLogin = async (req: Request, res: Response) => {
   return;
 };
 
+export const registerUser = async (req: Request, res: Response) => {
+  const { userId, userName, userLastName, userGenre, userStudy, userEmail, userPassword, usuRol } = req.body;
+  const user = await UserModel.register(
+    userId,
+    userName,
+    userLastName,
+    userGenre,
+    userStudy,
+    userEmail,
+    userPassword,
+    usuRol
+  );
+
+  res.send(user).status(201);
+};
+
 export const userLogOut = async (_req: Request, res: Response) => {
   res.cookie("token", "", {
     httpOnly: true,

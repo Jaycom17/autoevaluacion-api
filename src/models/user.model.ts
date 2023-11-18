@@ -1,3 +1,5 @@
+import bcrypt from "bcryptjs";
+
 import { createAccessToken } from "../lib/jwt";
 
 import { pool } from "../db/database";
@@ -23,7 +25,9 @@ export class User implements Observer {
 
       const userData = rows[0];
 
-      if (userData.usu_contrasena !== userPassword) {
+      let isPasswordValid = await bcrypt.compare(userPassword, userData.usu_contrasena);
+
+      if (!isPasswordValid) {
         return { message: "Password incorrect" };
       }
 
@@ -69,5 +73,55 @@ export class User implements Observer {
           break;
       }
     } catch (error) {}
+  }
+
+  public async register(
+    userId: string,
+    userName: string,
+    userLastName: string,
+    userGenre: string,
+    userStudy: string,
+    userEmail: string,
+    userPassword: string,
+    userRol: string
+  ) {
+    try {
+      const [rows] = await pool.query<RowDataPacket[]>(
+        "SELECT usu_correo FROM USUARIO WHERE usu_correo = ? or usr_identificacion = ?",
+        [userEmail, userId]
+      );
+
+      // Verificar si se encontró un usuario
+      if (rows.length != 0) {
+        return { message: "el usuario ya existe" };
+      }
+
+      let hashPassword = await bcrypt.hash(userPassword, 10);
+
+      await pool.query(
+        "INSERT INTO USUARIO (usr_identificacion, usu_nombre, usu_apellido, usu_genero, usu_estudio, usu_correo, usu_contrasena) VALUES (?, ?, ?, ?, ?, ?, ?)",
+        [
+          userId,
+          userName,
+          userLastName,
+          userGenre,
+          userStudy,
+          userEmail,
+          hashPassword,
+        ]
+      );
+
+      const [rol] = await pool.query<RowDataPacket[]>("SELECT rol_id FROM ROL WHERE rol_descripcion = ? ", [userRol]);
+
+      await pool.query(
+        "INSERT INTO USEROL (usr_identificacion, rol_id) VALUES (?, ?)",
+        [userId, rol[0].rol_id]
+      );
+
+      return { message: "User created" };
+    } catch (err) {
+      console.log(err);
+      return { error: "error" };
+    }
   }
 }
