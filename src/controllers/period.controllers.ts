@@ -31,6 +31,6 @@ export const updatePeriod = async (req: Request, res: Response) => {
 
 export const deletePeriod = async (req: Request, res: Response) => {
     const perId : number = parseInt(req.params.id);
-    const period = await PeriodModel.searchPeriod(perId);
+    const period = await PeriodModel.deletePeriod(perId);
     res.json(period).status(200);
 }
