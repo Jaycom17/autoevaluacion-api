@@ -59,7 +59,7 @@ export class Period {
     public async deletePeriod(perId: number){
         try {
             const [rows] = await pool.query<ResultSetHeader>(
-                'DELETE FROM PERIODO WHERE LAB_ID = ?',
+                'DELETE FROM PERIODO WHERE PER_ID = ?',
                 [perId]
             );       
             return rows.affectedRows != 0
