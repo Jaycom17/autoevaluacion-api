@@ -13,6 +13,19 @@ export const EMAIL = process.env.EMAIL || "autoevaluacionesunicauca@outlook.es";
 export const PASSWORD = process.env.PASSWORD || "autoevaluaciones123";
 export const URL = process.env.URL || "http://localhost:5173/";
 
+export const laborDictionary: Record <string, number> = {
+    'Docencia': 1,
+    'Trabajos Docencia': 2,
+    'Proyectos Investigación': 3,
+    'Trabajos Investigación': 4,
+    'Administración': 5,
+    'Asesoría': 6,
+    'Servicios': 7,
+    'Extensión': 8,
+    'Capacitación': 9,
+    'Otros Servicios': 10,
+}
+
 export const transporter = nodemailer.createTransport({
     host: "smtp-mail.outlook.com",
     port: 587,
