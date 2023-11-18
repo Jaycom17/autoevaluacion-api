@@ -2,16 +2,22 @@ import { Router } from "express";
 
 import { createLabor, showLaborByName, showLaborList, updateLabor, deleteLabor } from "../controllers/labor.controllers";
 
+import { authCordinator } from "../middlewares/auth.middleware";
+
 const laborRouter = Router();
 
-laborRouter.post("/labor", createLabor); //Create
 
 laborRouter.get("/labor/:name", showLaborByName); //GetByName
 
-laborRouter.get("/labor", showLaborList) //GetAll
+laborRouter.post("/labor",authCordinator, createLabor); //Create
 
-laborRouter.put("/labor", updateLabor); //Update
+laborRouter.get("/labor/:id",authCordinator, showLaborByID); //GetByID
 
-laborRouter.delete("/labor/:id", deleteLabor); //Delete
+laborRouter.get("/labor",authCordinator, showLaborList) //GetAll
+
+laborRouter.put("/labor",authCordinator, updateLabor); //Update
+
+laborRouter.delete("/labor/:id",authCordinator, deleteLabor); //Delete
+
 
 export default laborRouter;
