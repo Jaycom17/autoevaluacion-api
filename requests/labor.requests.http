@@ -14,14 +14,25 @@ POST {{api}}/labor
 Content-Type: application/json
 
 {
-  "lab_nombre": "Laboratorio 1",
-  "lab_descripcion": "Laboratorio de sistemas",
-  "lab_estado": "1",
-  "lab_tipo": "1",
-  "lab_capacidad": "20",
-  "lab_imagen": "https://www.unicauca.edu.co/versionP/imagenes/2017/11/20171127_1620_1.jpg",
-  "lab_ubicacion": "Bloque 1"
+    "LAB_ID": 1, 
+    "TL_DESCRIPCION": "Docencia", 
+    "LAB_NOMBRE": "Ingenieria de software", 
+    "LAB_HORAS": 60
 }
+
+### put labor
+PUT {{api}}/labor
+Content-Type: application/json
+
+{
+    "LAB_ID": 1, 
+    "TL_DESCRIPCION": "Docencia", 
+    "LAB_NOMBRE": "Ingenieria de software 2", 
+    "LAB_HORAS": 60
+}
+
+### delete labor
+DELETE {{api}}/labor/1
 
 ### get labors
 GET {{api}}/labor
