@@ -9,6 +9,10 @@ Content-Type: application/json
   "usu_contrasena": "juan123"
 }
 
+### post logout
+POST {{api}}/user/logout
+Content-Type: application/json
+
 ### post period
 POST {{api}}/period
 Content-Type: application/json

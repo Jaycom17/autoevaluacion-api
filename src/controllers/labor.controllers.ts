@@ -6,14 +6,13 @@ const LaborModel = new Labor();
 const queryString = require('querystring');
 
 export const createLabor = async(req: Request, res: Response) => {
-    const { LAB_ID, TL_DESCRIPCION, LAB_NOMBRE, LAB_HORAS} = req.body;
-    const labor =  await LaborModel.createLabor(LAB_ID, TL_DESCRIPCION, LAB_NOMBRE, LAB_HORAS);
-    if(labor == false){
+    const { TL_DESCRIPCION, LAB_NOMBRE, LAB_HORAS} = req.body;
+    const labor =  await LaborModel.createLabor(TL_DESCRIPCION, LAB_NOMBRE, LAB_HORAS);
+    if(!labor){
         res.status(400).json({ status: 'error', message: 'Error al crear la labor' });
-    } else if(labor == null){
-        res.status(500).json({ status: 'error', message: 'Error interno del servidor' });
-    }else
-        res.json(labor).status(201);
+    }else{
+        res.status(201).json({ status: 'ok', message: 'Labor creada correctamente' });
+    }
 }
 
 export const showLaborByName = async(req: Request, res: Response) => {
@@ -55,10 +54,9 @@ export const updateLabor = async(req: Request, res: Response) => {
 
 export const deleteLabor = async(req: Request, res: Response) => {
     const labor =  await LaborModel.deleteLabor(parseInt(req.params.id));
-    if(labor == false){
-        res.status(400).json({ status: 'error', message: 'Esta labor no se encuentra registrada' });
-    } else if(labor == null){
-        res.status(500).json({ status: 'error', message: 'Error interno del servidor' });
-    }else
-        res.json(labor).status(200);
+    if(!labor){
+        res.status(400).json({ status: 'error', message: 'Error al eliminar la labor' });
+    }else{
+        res.status(201).json({ status: 'ok', message: 'Labor eliminada correctamente' });
+    }
 }

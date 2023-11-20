@@ -15,11 +15,7 @@ export const userLogin = async (req: Request, res: Response) => {
     res.status(400).json(user);
     return;
   }
-  res.cookie("token", user.token, {
-    httpOnly: process.env.NODE_ENV !== "development",
-    secure: false,
-    sameSite: "none",
-  });
+  res.cookie("token", user.token);
 
   res.json(user.userData);
   return;

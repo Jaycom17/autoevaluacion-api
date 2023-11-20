@@ -40,11 +40,11 @@ export const authProfessor = (req: Request, res: Response, next: NextFunction) =
         return res.status(401).json({ message: "Token is not valid" });
       }
 
-      if(user.userRol !== "docente"){
+      if(user.usu_rol !== "docente"){
         return res.status(401).json({ message: "User is not a professor" });
       }
 
-      if(user.userRol !== ROLES.PROFESSOR){
+      if(user.usu_rol !== ROLES.PROFESSOR){
         return res.status(401).json({ message: "User is not a professor" });
       }
 
@@ -73,7 +73,7 @@ export const authCordinator = (req: Request, res: Response, next: NextFunction) 
         return res.status(401).json({ message: "Token is not valid" });
       }
 
-      if(user.userRol !== ROLES.CORDINATOR){
+      if(user.usu_rol !== ROLES.CORDINATOR){
         return res.status(401).json({ message: "User is not a coordinator" });
       }
 
@@ -102,7 +102,7 @@ export const authRector = (req: Request, res: Response, next: NextFunction) => {
         return res.status(401).json({ message: "Token is not valid" });
       }
 
-      if(user.userRol !== ROLES.RECTOR){
+      if(user.usu_rol !== ROLES.RECTOR){
         return res.status(401).json({ message: "User is not a rector" });
       }
 

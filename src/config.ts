@@ -11,7 +11,7 @@ export const DB_DATABASE = process.env.DB_DATABASE || "dbAutoevaluacion";
 export const TOKEN_SECRET = process.env.TOKEN_SECRET || "autoevaluationToken";
 export const EMAIL = process.env.EMAIL || "autoevaluacionesunicauca@outlook.es";
 export const PASSWORD = process.env.PASSWORD || "autoevaluaciones123";
-export const URL = process.env.URL || "http://localhost:5173/";
+export const URL = process.env.URL || "http://localhost:5173/autoevaluaciones";
 
 export const laborDictionary: Record <string, number> = {
     'Docencia': 1,

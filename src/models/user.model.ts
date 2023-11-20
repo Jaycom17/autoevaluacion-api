@@ -32,9 +32,9 @@ export class User implements Observer {
       }
 
       const token = await createAccessToken({
-        userEmail: userEmail,
-        userRol: userData.ROL_DESCRIPCION,
-        userNotification: userData.USU_NOTIFICACION,
+        usu_correo: userData.usu_correo,
+        usu_notificacion: userData.USU_NOTIFICACION,
+        usu_rol: userData.ROL_DESCRIPCION
       });
 
       return {

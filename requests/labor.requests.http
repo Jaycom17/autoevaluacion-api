@@ -9,15 +9,18 @@ Content-Type: application/json
   "usu_contrasena": "juan123"
 }
 
+### post logout
+POST {{api}}/user/logout
+Content-Type: application/json
+
 ### post labor
 POST {{api}}/labor
 Content-Type: application/json
 
 {
-    "LAB_ID": 1, 
-    "TL_DESCRIPCION": "Docencia", 
-    "LAB_NOMBRE": "Ingenieria de software", 
-    "LAB_HORAS": 60
+  "TL_DESCRIPCION": "Docencia", 
+  "LAB_NOMBRE": "Ingenieria de software 4", 
+  "LAB_HORAS": 60
 }
 
 ### put labor
@@ -32,7 +35,7 @@ Content-Type: application/json
 }
 
 ### delete labor
-DELETE {{api}}/labor/1
+DELETE {{api}}/labor/5  
 
 ### get labors
 GET {{api}}/labor

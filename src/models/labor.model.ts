@@ -7,17 +7,18 @@ export class Labor {
 
     constructor() {}
 
-    public async createLabor(labId: number, labType: string, labName: string, labTime: number) {
+    public async createLabor(labType: string, labName: string, labTime: number) {
         // Insertar en la tabla de datos
         try { 
             const labTypeId = laborDictionary[labType]
             const [result] = await pool.query<ResultSetHeader>(
-                'INSERT INTO LABOR VALUES (?,?,?,?)',
-                [labId, labTypeId, labName, labTime]
-            );   
+                'INSERT INTO LABOR (tl_id,lab_nombre,lab_horas) VALUES (?,?,?)',
+                [labTypeId, labName, labTime]
+            );
+            console.log(result.affectedRows); 
             return result.affectedRows!=0;
         } catch (error) {
-            return null;
+            return false;
         }
     }
 
@@ -39,7 +40,7 @@ export class Labor {
     public async showLaborList(){
         try{
             const [rows] = await pool.query<RowDataPacket[]>(
-                'SELECT * FROM LABOR'
+                'select lab_id, tl_descripcion, lab_horas, lab_nombre from labor inner join tipolabor on labor.tl_id = tipolabor.tl_id'
             );
             if(rows.length == 0){
                 return false;
@@ -59,7 +60,7 @@ export class Labor {
             );
             return result.affectedRows != 0;
         } catch (error) {
-            return null;
+            return false;
         }
     }
 
@@ -71,7 +72,7 @@ export class Labor {
             );       
             return rows.affectedRows != 0
         } catch (error) {
-            return null;
+            return false;
         }
     }
 }
