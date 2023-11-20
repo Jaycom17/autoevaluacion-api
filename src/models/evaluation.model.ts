@@ -1,7 +1,6 @@
 
 import { pool } from '../db/database'
 import { ResultSetHeader, RowDataPacket } from 'mysql2';
-import { Labor, Period, User, Rol } from '../types';
 import { Article } from './observer';
 
 
@@ -12,24 +11,48 @@ export class Evaluation extends Article{
     }
 
 
-    public async createEvaluation(evaId: number, evaState: string, evaScore: number, evaResult: string, evaPeriod: Period, evaLabor: Labor, usrId: User, rolId: Rol) {
+    public async createEvaluation(evaId: number, evaLabor: string ,evaPeriod: string, usrId: number, evaState: number) {
         try {
-            const [result] = await pool.query<ResultSetHeader>(
-                'INSERT into EVALUACION values(?,?,?,?,?,?,?,?)',
-                [evaId, evaLabor, evaPeriod, usrId, rolId, evaState, evaScore, evaResult]
+            const[rows] = await pool.query<RowDataPacket[]>(
+                'select lab_id from labor where LAB_NOMBRE = ?',
+                [evaLabor]
+            );
+            const[rows2] = await pool.query<RowDataPacket[]>(
+                'select rol_id from userol where USR_IDENTIFICACION = ?',
+                [usrId]
             );
 
-            if(result.affectedRows==0){return false;}
-            
-            this.notify("createEvaluation");
+            const[rows3] = await pool.query<RowDataPacket[]>(
+                'select per_id from periodo where PER_NOMBRE = ?',
+                [evaPeriod]
+            );
 
-            return true;
+            const [result] = await pool.query<ResultSetHeader>(
+                'INSERT into EVALUACION values(?,?,?,?,?,?,?,?)',
+                [evaId, rows[0].lab_id, rows3[0].per_id, usrId, rows2[0].rol_id,evaState, 0, ""]
+            );
+            //this.notify("createEvaluation");
+            return result.affectedRows!==0;
+            
 
         } catch (err) {
             // Manejar el error
             console.error(err);
             return false;
         }
+    }
+    public async makeEvaluation(evaId: number, evaScore: number, evaResult: string) {
+        try {
+            const [result] = await pool.query<ResultSetHeader>(
+                'UPDATE EVALUACION SET EVA_PUNTAJE = ?, EVA_RESULTADO = ? WHERE EVA_ID = ?',
+                [evaScore, evaResult, evaId]
+            );  
+            return result.affectedRows!=0;
+        } catch (error) {
+            console.error(error);
+            return false;
+        }
+        
     }
     public async deleteEvaluation(evaId: number) {
 
@@ -58,18 +81,35 @@ export class Evaluation extends Article{
         return rows[0];
     }
 
-    public async updateEvaluation(evaId: number, evaScore: number, evaResult: string) {
+    public async updateEvaluation(evaId: number, evaLabor: string ,evaPeriod: string, usrId: number, evaState: number) {
         try {
+            const[rows] = await pool.query<RowDataPacket[]>(
+                'select lab_id from labor where LAB_NOMBRE = ?',
+                [evaLabor]
+            );
+            const[rows2] = await pool.query<RowDataPacket[]>(
+                'select rol_id from userol where USR_IDENTIFICACION = ?',
+                [usrId]
+            );
+
+            const[rows3] = await pool.query<RowDataPacket[]>(
+                'select per_id from periodo where PER_NOMBRE = ?',
+                [evaPeriod]
+            );
+
             const [result] = await pool.query<ResultSetHeader>(
-                'UPDATE EVALUACION SET EVA_PUNTAJE = ?, EVA_RESULTADO = ? WHERE EVA_ID = ?',
-                [evaScore, evaResult, evaId]
-            );  
-            return result.affectedRows!=0;
-        } catch (error) {
-            console.error(error);
+                'Update EVALUACION SET LAB_ID = ?, PER_ID = ?, USR_IDENTIFICACION = ?, ROL_ID = ?, EVA_ESTADO = ?, EVA_PUNTAJE = ?, EVA_RESULTADO = ? WHERE EVA_ID = ?',
+                [rows[0].lab_id, rows3[0].per_id, usrId, rows2[0].rol_id,evaState, 0, "",evaId]
+            );
+            //this.notify("createEvaluation");
+            return result.affectedRows!==0;
+            
+
+        } catch (err) {
+            // Manejar el error
+            console.error(err);
             return false;
         }
-        
     }
     public async getEvaluation() {
         try {

@@ -24,7 +24,7 @@ Content-Type: application/json
   "userStudy": "Ingenieria en sistemas",
   "userEmail": "jnarvaezm@unicauca.edu.co",
   "userPassword": "jose123",
-  "usuRol": "docente"
+  "usuRol": "coordinador"
 }
 
 ### post logout

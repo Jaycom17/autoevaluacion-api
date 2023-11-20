@@ -1,0 +1,22 @@
+@api = http://localhost:3000/api
+
+### post login
+POST {{api}}/user/login
+Content-Type: application/json
+
+{
+  "usu_email": "jnarvaezm@unicauca.edu.co",
+  "usu_contrasena": "jose123"
+}
+###post evaluation
+POST {{api}}/evaluation
+Content-Type: application/json
+
+{
+  "eva_id": 5,
+  "eva_labor": "uno",
+  "eva_period": "pepito",
+  "usr_id": 1234,
+  "eva_state": 0
+}
+
