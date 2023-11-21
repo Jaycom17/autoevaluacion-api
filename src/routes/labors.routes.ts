@@ -11,7 +11,7 @@ laborRouter.get("/labor/:name", showLaborByName); //GetByName
 
 laborRouter.post("/labor",authCordinator, createLabor); //Create
 
-laborRouter.get("/labor/:id",authCordinator, showLaborByID); //GetByID
+laborRouter.get("/labor/:id",authCordinator, showLaborByName); //GetByID
 
 laborRouter.get("/labor",authCordinator, showLaborList) //GetAll
 
