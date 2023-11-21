@@ -1,0 +1,45 @@
+@api = http://localhost:3000/api
+
+### post login
+POST {{api}}/user/login
+Content-Type: application/json
+
+{
+  "usu_email": "jorejuelam@unicauca.edu.co",
+  "usu_contrasena": "juan123"
+}
+
+### post logout
+POST {{api}}/user/logout
+Content-Type: application/json
+
+### post period
+POST {{api}}/period
+Content-Type: application/json
+
+{
+  "per_id": 1,
+  "per_nombre": "2023-02",
+  "per_fechainicio": "2023-07-1",
+  "per_fechafin": "2023-12-30"
+}
+
+### put period
+PUT {{api}}/period
+Content-Type: application/json
+
+{
+  "per_id": 1,
+  "per_nombre": "2023-01",
+  "per_fechainicio": "2023-07-1",
+  "per_fechafin": "2023-12-30"
+}
+
+### delete period
+DELETE {{api}}/period/1
+
+### get period
+GET {{api}}/period/1
+
+### get all periods
+GET {{api}}/period

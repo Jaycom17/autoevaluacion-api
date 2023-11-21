@@ -7,7 +7,7 @@ export const sendEmailToProfessor = async (user: any) => {
     from: EMAIL,
     to: user.usu_correo,
     subject: "Autoevaluación activa",
-    text: content,
+    html: content,
   };
 
   transporter.sendMail(mailOptions, (error, info) => {

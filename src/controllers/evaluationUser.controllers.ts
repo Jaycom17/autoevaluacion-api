@@ -15,14 +15,26 @@ export const userLogin = async (req: Request, res: Response) => {
     res.status(400).json(user);
     return;
   }
-  res.cookie("token", user.token, {
-    httpOnly: process.env.NODE_ENV !== "development",
-    secure: false,
-    sameSite: "none",
-  });
+  res.cookie("token", user.token);
 
   res.json(user.userData);
   return;
+};
+
+export const registerUser = async (req: Request, res: Response) => {
+  const { userId, userName, userLastName, userGenre, userStudy, userEmail, userPassword, usuRol } = req.body;
+  const user = await UserModel.register(
+    userId,
+    userName,
+    userLastName,
+    userGenre,
+    userStudy,
+    userEmail,
+    userPassword,
+    usuRol
+  );
+
+  res.send(user).status(201);
 };
 
 export const userLogOut = async (_req: Request, res: Response) => {
@@ -36,26 +48,47 @@ export const userLogOut = async (_req: Request, res: Response) => {
 
 export const createEvaluation = async (req: Request, res: Response) => {
   const {
-    evaId,
-    evaState,
-    evaScore,
-    evaResult,
-    evaPeriod,
-    evaLabor,
-    usrId,
-    rolId,
+    eva_id,
+    eva_labor,
+    eva_period,
+    usr_id,
+    eva_state
   } = req.body;
   const evaluation = await EvaluationModel.createEvaluation(
-    evaId,
-    evaState,
-    evaScore,
-    evaResult,
-    evaPeriod,
-    evaLabor,
-    usrId,
-    rolId
+    eva_id,
+    eva_labor,
+    eva_period,
+    usr_id,
+    eva_state
   );
-  res.json(evaluation).status(201);
+  if(evaluation){
+    res.status(201).json({message: "Evaluación creada con éxito"});
+  }
+  else{
+    res.status(400).json({message: "Error al crear la evaluación"});
+  }
+};
+export const updateEvaluation = async (req: Request, res: Response) => {
+  const {
+    eva_id,
+    eva_labor,
+    eva_period,
+    usr_id,
+    eva_state
+  } = req.body;
+  const evaluation = await EvaluationModel.createEvaluation(
+    eva_id,
+    eva_labor,
+    eva_period,
+    usr_id,
+    eva_state
+  );
+  if(evaluation){
+    res.status(201).json({message: "Evaluación creada con éxito"});
+  }
+  else{
+    res.status(400).json({message: "Error al crear la evaluación"});
+  }
 };
 
 export const deleteEvaluation = async (req: Request, res: Response) => {
@@ -72,9 +105,9 @@ export const checkEvaluation = async (req: Request, res: Response) => {
   res.json(evaluation).status(201);
 };
 
-export const updateEvaluation = async (req: Request, res: Response) => {
+export const makeEvaluation = async (req: Request, res: Response) => {
   const { evaId, evaScore, evaResult } = req.body;
-  const evaluation = await EvaluationModel.updateEvaluation(
+  const evaluation = await EvaluationModel.makeEvaluation(
     evaId,
     evaScore,
     evaResult

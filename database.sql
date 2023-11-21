@@ -31,14 +31,15 @@ create table EVALUACION
 /*==============================================================*/
 /* Table: LABOR                                                 */
 /*==============================================================*/
-create table LABOR
+CREATE TABLE LABOR
 (
-   LAB_ID               numeric(8,0) not null,
-   TL_ID                numeric(8,0) not null,
-   LAB_NOMBRE           varchar(50),
-   LAB_HORAS            numeric(8,0),
-   primary key (LAB_ID)
+   LAB_ID               int NOT NULL AUTO_INCREMENT,
+   TL_ID                NUMERIC(8,0) NOT NULL,
+   LAB_NOMBRE           VARCHAR(50),
+   LAB_HORAS            NUMERIC(8,0),
+   PRIMARY KEY (LAB_ID)
 );
+
 
 /*==============================================================*/
 /* Table: PERIODO                                               */

@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { userLogin, userLogOut } from "../controllers/evaluationUser.controllers";
+import { userLogin, userLogOut, registerUser } from "../controllers/evaluationUser.controllers";
 
 import { auth } from "../middlewares/auth.middleware";
 
@@ -13,5 +13,7 @@ userRouter.get("/user/profile", auth, (req, res) => {
 });
 
 userRouter.post("/user/logout", auth, userLogOut);
+
+userRouter.post("/user/register", registerUser);
 
 export default userRouter;

@@ -1,0 +1,32 @@
+@api = http://localhost:3000/api
+
+### post login
+POST {{api}}/user/login
+Content-Type: application/json
+
+{
+  "usu_email": "jorejuelam@unicauca.edu.co",
+  "usu_contrasena": "juan123"
+}
+
+### get profile
+GET {{api}}/user/profile
+
+### post register
+POST {{api}}/user/register
+Content-Type: application/json
+
+{
+  "userId": 1234,
+  "userName": "jose",
+  "userLastName": "Esteban",
+  "userGenre": "M",
+  "userStudy": "Ingenieria en sistemas",
+  "userEmail": "jnarvaezm@unicauca.edu.co",
+  "userPassword": "jose123",
+  "usuRol": "docente"
+}
+
+### post logout
+POST {{api}}/user/logout
+Content-Type: application/json

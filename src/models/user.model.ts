@@ -1,7 +1,9 @@
+import bcrypt from "bcryptjs";
+
 import { createAccessToken } from "../lib/jwt";
 
 import { pool } from "../db/database";
-import { RowDataPacket } from "mysql2";
+import { ResultSetHeader, RowDataPacket } from "mysql2";
 import { Observer } from "./observer";
 
 import { sendEmailToProfessor } from "./util/sendEmail";
@@ -18,19 +20,21 @@ export class User implements Observer {
 
       // Verificar si se encontró un usuario
       if (rows.length != 1) {
-        return { message: "User no found" };
+        return { message: "Usuario no encontrado" };
       }
 
       const userData = rows[0];
 
-      if (userData.usu_contrasena !== userPassword) {
-        return { message: "Password incorrect" };
+      let isPasswordValid = await bcrypt.compare(userPassword, userData.usu_contrasena);
+
+      if (!isPasswordValid) {
+        return { message: "Contraseña incorrecta" };
       }
 
       const token = await createAccessToken({
-        userEmail: userEmail,
-        userRol: userData.ROL_DESCRIPCION,
-        userNotification: userData.USU_NOTIFICACION,
+        usu_correo: userData.usu_correo,
+        usu_notificacion: userData.USU_NOTIFICACION,
+        usu_rol: userData.ROL_DESCRIPCION
       });
 
       return {
@@ -47,17 +51,17 @@ export class User implements Observer {
     }
   }
 
-  public async notify(action: string) {
+  public async notify(action: string, idUser: number) {
     try {
       switch (action) {
         case "createEvaluation":
           const [rows] = await pool.query<RowDataPacket[]>(
-            "SELECT usu_correo FROM USUARIO inner join userol on userol.USR_IDENTIFICACION = usuario.USR_IDENTIFICACION inner join rol on userol.rol_id = rol.rol_id WHERE rol_description = docente",
+            "SELECT usu_correo FROM USUARIO where USR_IDENTIFICACION = ?",[idUser]
           );
+
+          await pool.query<ResultSetHeader>("update usuario set usu_notificacion = 's' where usr_identificacion = ?", [idUser]);
           
-          rows.forEach((element: any) => {
-            sendEmailToProfessor(element);
-          });
+          sendEmailToProfessor(rows[0]);
 
           break;
 
@@ -69,5 +73,55 @@ export class User implements Observer {
           break;
       }
     } catch (error) {}
+  }
+
+  public async register(
+    userId: string,
+    userName: string,
+    userLastName: string,
+    userGenre: string,
+    userStudy: string,
+    userEmail: string,
+    userPassword: string,
+    userRol: string
+  ) {
+    try {
+      const [rows] = await pool.query<RowDataPacket[]>(
+        "SELECT usu_correo FROM USUARIO WHERE usu_correo = ? or usr_identificacion = ?",
+        [userEmail, userId]
+      );
+
+      // Verificar si se encontró un usuario
+      if (rows.length != 0) {
+        return { message: "el usuario ya existe" };
+      }
+
+      let hashPassword = await bcrypt.hash(userPassword, 10);
+
+      await pool.query(
+        "INSERT INTO USUARIO (usr_identificacion, usu_nombre, usu_apellido, usu_genero, usu_estudio, usu_correo, usu_contrasena) VALUES (?, ?, ?, ?, ?, ?, ?)",
+        [
+          userId,
+          userName,
+          userLastName,
+          userGenre,
+          userStudy,
+          userEmail,
+          hashPassword,
+        ]
+      );
+
+      const [rol] = await pool.query<RowDataPacket[]>("SELECT rol_id FROM ROL WHERE rol_descripcion = ? ", [userRol]);
+
+      await pool.query(
+        "INSERT INTO USEROL (usr_identificacion, rol_id) VALUES (?, ?)",
+        [userId, rol[0].rol_id]
+      );
+
+      return { message: "User created" };
+    } catch (err) {
+      console.log(err);
+      return { error: "error" };
+    }
   }
 }

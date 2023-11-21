@@ -7,17 +7,16 @@ import { authCordinator } from "../middlewares/auth.middleware";
 const laborRouter = Router();
 
 
-laborRouter.get("/labor/:name", showLaborByName); //GetByName
+laborRouter.post("/labor", authCordinator, createLabor); //Create
 
-laborRouter.post("/labor",authCordinator, createLabor); //Create
+laborRouter.get("/labor/:name", authCordinator, showLaborByName); //GetByName
 
-laborRouter.get("/labor/:id",authCordinator, showLaborByName); //GetByID
+laborRouter.post("/labor",authCordinator, createLabor); //Create 
 
-laborRouter.get("/labor",authCordinator, showLaborList) //GetAll
+laborRouter.get("/labor", authCordinator, showLaborList) //GetAll
 
-laborRouter.put("/labor",authCordinator, updateLabor); //Update
+laborRouter.put("/labor", authCordinator, updateLabor); //Update
 
-laborRouter.delete("/labor/:id",authCordinator, deleteLabor); //Delete
-
+laborRouter.delete("/labor/:id", authCordinator, deleteLabor); //Delete
 
 export default laborRouter;

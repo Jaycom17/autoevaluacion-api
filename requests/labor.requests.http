@@ -1,0 +1,41 @@
+@api = http://localhost:3000/api
+
+### post login
+POST {{api}}/user/login
+Content-Type: application/json
+
+{
+  "usu_email": "jorejuelam@unicauca.edu.co",
+  "usu_contrasena": "juan123"
+}
+
+### post logout
+POST {{api}}/user/logout
+Content-Type: application/json
+
+### post labor
+POST {{api}}/labor
+Content-Type: application/json
+
+{
+  "TL_DESCRIPCION": "Docencia", 
+  "LAB_NOMBRE": "Ingenieria de software 4", 
+  "LAB_HORAS": 60
+}
+
+### put labor
+PUT {{api}}/labor
+Content-Type: application/json
+
+{
+    "LAB_ID": 1, 
+    "TL_DESCRIPCION": "Docencia", 
+    "LAB_NOMBRE": "Ingenieria de software 2", 
+    "LAB_HORAS": 60
+}
+
+### delete labor
+DELETE {{api}}/labor/5  
+
+### get labors
+GET {{api}}/labor
