@@ -31,7 +31,9 @@ export class Evaluation extends Article{
                 'INSERT into EVALUACION values(?,?,?,?,?,?,?,?)',
                 [evaId, rows[0].lab_id, rows3[0].per_id, usrId, rows2[0].rol_id,evaState, 0, ""]
             );
-            //this.notify("createEvaluation");
+
+            this.notify("createEvaluation", usrId);
+
             return result.affectedRows!==0;
             
 

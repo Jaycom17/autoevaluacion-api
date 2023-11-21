@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 import { createAccessToken } from "../lib/jwt";
 
 import { pool } from "../db/database";
-import { RowDataPacket } from "mysql2";
+import { ResultSetHeader, RowDataPacket } from "mysql2";
 import { Observer } from "./observer";
 
 import { sendEmailToProfessor } from "./util/sendEmail";
@@ -20,7 +20,7 @@ export class User implements Observer {
 
       // Verificar si se encontró un usuario
       if (rows.length != 1) {
-        return { message: "User no found" };
+        return { message: "Usuario no encontrado" };
       }
 
       const userData = rows[0];
@@ -28,7 +28,7 @@ export class User implements Observer {
       let isPasswordValid = await bcrypt.compare(userPassword, userData.usu_contrasena);
 
       if (!isPasswordValid) {
-        return { message: "Password incorrect" };
+        return { message: "Contraseña incorrecta" };
       }
 
       const token = await createAccessToken({
@@ -51,17 +51,17 @@ export class User implements Observer {
     }
   }
 
-  public async notify(action: string) {
+  public async notify(action: string, idUser: number) {
     try {
       switch (action) {
         case "createEvaluation":
           const [rows] = await pool.query<RowDataPacket[]>(
-            "SELECT usu_correo FROM USUARIO inner join userol on userol.USR_IDENTIFICACION = usuario.USR_IDENTIFICACION inner join rol on userol.rol_id = rol.rol_id WHERE rol_description = docente",
+            "SELECT usu_correo FROM USUARIO where USR_IDENTIFICACION = ?",[idUser]
           );
+
+          await pool.query<ResultSetHeader>("update usuario set usu_notificacion = 's' where usr_identificacion = ?", [idUser]);
           
-          rows.forEach((element: any) => {
-            sendEmailToProfessor(element);
-          });
+          sendEmailToProfessor(rows[0]);
 
           break;
 

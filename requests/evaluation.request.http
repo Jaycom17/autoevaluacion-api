@@ -5,17 +5,18 @@ POST {{api}}/user/login
 Content-Type: application/json
 
 {
-  "usu_email": "jnarvaezm@unicauca.edu.co",
-  "usu_contrasena": "jose123"
+  "usu_email": "jorejuelam@unicauca.edu.co",
+  "usu_contrasena": "juan123"
 }
+
 ###post evaluation
 POST {{api}}/evaluation
 Content-Type: application/json
 
 {
-  "eva_id": 5,
-  "eva_labor": "uno",
-  "eva_period": "pepito",
+  "eva_id": 11,
+  "eva_labor": "PiggyBank 2.0",
+  "eva_period": "2023-02",
   "usr_id": 1234,
   "eva_state": 0
 }
