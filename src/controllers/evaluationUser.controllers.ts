@@ -37,6 +37,16 @@ export const registerUser = async (req: Request, res: Response) => {
   res.send(user).status(201);
 };
 
+export const getProfessors = async (_req: Request, res: Response) => {
+  try {
+    const professors = await UserModel.getProfessors();
+
+    res.status(201).json(professors);
+  } catch (error) {
+    res.status(500).json({ error: "Error interno del servidor" });
+  }
+};
+
 export const userLogOut = async (_req: Request, res: Response) => {
   res.cookie("token", "", {
     httpOnly: true,

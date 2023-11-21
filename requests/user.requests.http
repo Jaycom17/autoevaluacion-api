@@ -30,3 +30,6 @@ Content-Type: application/json
 ### post logout
 POST {{api}}/user/logout
 Content-Type: application/json
+
+### get professors
+GET {{api}}/user/professors

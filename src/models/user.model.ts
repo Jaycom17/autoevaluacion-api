@@ -20,7 +20,7 @@ export class User implements Observer {
 
       // Verificar si se encontró un usuario
       if (rows.length != 1) {
-        return { message: "Usuario no encontrado" };
+        return { message: "Usuario o contraseña incorrectos" };
       }
 
       const userData = rows[0];
@@ -28,7 +28,7 @@ export class User implements Observer {
       let isPasswordValid = await bcrypt.compare(userPassword, userData.usu_contrasena);
 
       if (!isPasswordValid) {
-        return { message: "Contraseña incorrecta" };
+        return { message: "Usuario o contraseña incorrectos" };
       }
 
       const token = await createAccessToken({
@@ -47,6 +47,19 @@ export class User implements Observer {
       };
     } catch (err) {
       console.log(err);
+      return { error: "error" };
+    }
+  }
+
+  public async getProfessors() {
+    try {
+      const [rows] = await pool.query<RowDataPacket[]>(
+        "SELECT usuario.usr_identificacion, usuario.usu_nombre, usuario.usu_apellido FROM usuario inner join userol on usuario.usr_identificacion = userol.usr_identificacion inner join rol on userol.rol_id = rol.rol_id WHERE rol.rol_descripcion = 'docente'"
+      );
+
+      return rows;
+    } catch (error) {
+      console.log(error);
       return { error: "error" };
     }
   }

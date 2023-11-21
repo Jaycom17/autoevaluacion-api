@@ -14,7 +14,6 @@ POST {{api}}/evaluation
 Content-Type: application/json
 
 {
-  "eva_id": 11,
   "eva_labor": "PiggyBank 2.0",
   "eva_period": "2023-02",
   "usr_id": 1234,
