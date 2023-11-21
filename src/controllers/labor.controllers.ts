@@ -29,6 +29,17 @@ export const showLaborByName = async(req: Request, res: Response) => {
     }
 }
 
+export const showLaborById = async(req: Request, res: Response) => {
+    const labor =  await LaborModel.showLaborById(parseInt(req.params.id));
+    if (labor === null) {
+        res.status(500).json({ error: 'Error al buscar labor por ID' });
+    } else if (labor === false) {
+        res.status(404).json({ message: 'Labor no encontrada por ID' });
+    } else {
+        res.status(200).json(labor);
+    }
+}
+
 export const showLaborList = async(_req: Request, res: Response) => {
     const labor =  await LaborModel.showLaborList();
     if (labor === null) {
@@ -41,8 +52,8 @@ export const showLaborList = async(_req: Request, res: Response) => {
 }
 
 export const updateLabor = async(req: Request, res: Response) => {
-    const { LAB_ID, TL_DESCRIPCION, LAB_NOMBRE, LAB_HORAS } = req.body;
-    const labor =  await LaborModel.updateLabor(LAB_ID, TL_DESCRIPCION, LAB_NOMBRE, LAB_HORAS);
+    const { TL_DESCRIPCION, LAB_NOMBRE, LAB_HORAS } = req.body;
+    const labor =  await LaborModel.updateLabor(parseInt(req.params.id), TL_DESCRIPCION, LAB_NOMBRE, LAB_HORAS);
     if (labor === null) {
         res.status(500).json({ status: 'error', message: 'Error al actualizar la labor' });
     } else if (labor === false) {

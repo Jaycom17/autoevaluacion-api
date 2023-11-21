@@ -37,6 +37,21 @@ export class Labor {
         }
     }
 
+    public async showLaborById(labId: number){
+        try{
+            const [row] = await pool.query<RowDataPacket[]>(
+                'SELECT lab_id, tl_descripcion, lab_nombre, lab_horas FROM LABOR INNER JOIN TIPOLABOR ON LABOR.TL_ID = TIPOLABOR.TL_ID WHERE LAB_ID = ?',
+                [labId] 
+            );
+            if(row.length == 0){
+                return false;
+            }
+            return row[0];
+        } catch (error){
+            return null;
+        }
+    }
+
     public async showLaborList(){
         try{
             const [rows] = await pool.query<RowDataPacket[]>(
