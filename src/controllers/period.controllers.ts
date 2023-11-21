@@ -7,8 +7,8 @@ const PeriodModel = new Period();
 
 export const createPeriod = async (req: Request, res: Response) => {
     //perId: number, perName: string, perInitDate: string, perFinishDate: string
-    const { per_id, per_nombre, per_fechainicio, per_fechafin} = req.body;
-    const period = await PeriodModel.createPeriod(per_id, per_nombre, per_fechainicio, per_fechafin);
+    const { per_nombre, per_fechainicio, per_fechafin} = req.body;
+    const period = await PeriodModel.createPeriod(per_nombre, per_fechainicio, per_fechafin);
     res.json(period).status(201);
 }
 
