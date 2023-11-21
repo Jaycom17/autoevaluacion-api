@@ -3,11 +3,11 @@ import { ResultSetHeader, RowDataPacket } from 'mysql2';
 
 export class Period {
     constructor() { }
-    public async createPeriod(perId: number, perName: string, perInitDate: string, perFinishDate: string) {
+    public async createPeriod(perName: string, perInitDate: string, perFinishDate: string) {
         try {
             const [resul] = await pool.query<ResultSetHeader>(
-                'INSERT INTO PERIODO (PER_ID, PER_NOMBRE, PER_FECHAINICIO, PER_FECHAFIN) VALUES (?, ?, ?, ?)',
-                [perId, perName, perInitDate, perFinishDate]
+                'INSERT INTO PERIODO (PER_NOMBRE, PER_FECHAINICIO, PER_FECHAFIN) VALUES (?, ?, ?)',
+                [perName, perInitDate, perFinishDate]
             );
             return resul.affectedRows!=0;
         } catch (error) {
