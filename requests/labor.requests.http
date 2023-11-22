@@ -5,8 +5,8 @@ POST {{api}}/user/login
 Content-Type: application/json
 
 {
-  "usu_email": "cgarcias@unicauca.edu.co",
-  "usu_contrasena": "carl123"
+  "usu_email": "jorejuelam@unicauca.edu.co",
+  "usu_contrasena": "juan123"
 }
 
 ### post logout
@@ -24,13 +24,12 @@ Content-Type: application/json
 }
 
 ### put labor
-PUT {{api}}/labor
+PUT {{api}}/labor/27
 Content-Type: application/json
 
 {
-    "LAB_ID": 1, 
     "TL_DESCRIPCION": "Docencia", 
-    "LAB_NOMBRE": "Ingenieria de software 2", 
+    "LAB_NOMBRE": "Teoría y Dinámica de Sistemas", 
     "LAB_HORAS": 60
 }
 
