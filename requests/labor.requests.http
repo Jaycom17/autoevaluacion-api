@@ -24,7 +24,7 @@ Content-Type: application/json
 }
 
 ### put labor
-PUT {{api}}/labor/27
+PUT {{api}}/labor/4
 Content-Type: application/json
 
 {
