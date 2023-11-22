@@ -17,11 +17,11 @@ drop table if exists USUARIO;
 /*==============================================================*/
 create table EVALUACION
 (
-   EVA_ID               numeric(8,0) not null,
-   LAB_ID               numeric(8,0) not null,
-   PER_ID               numeric(8,0) not null,
-   USR_IDENTIFICACION   numeric(8,0),
-   ROL_ID               numeric(8,0),
+   EVA_ID               int not null AUTO_INCREMENT,
+   LAB_ID               int not null,
+   PER_ID               int not null,
+   USR_IDENTIFICACION   numeric(12,0),
+   ROL_ID               int,
    EVA_ESTADO           bool,
    EVA_PUNTAJE          numeric(4,2),
    EVA_RESULTADO        varchar(1000),
@@ -46,7 +46,7 @@ CREATE TABLE LABOR
 /*==============================================================*/
 create table PERIODO
 (
-   PER_ID               numeric(8,0) not null,
+   PER_ID               int not null AUTO_INCREMENT,
    PER_NOMBRE           varchar(50),
    PER_FECHAINICIO      date,
    PER_FECHAFIN         date,
@@ -58,7 +58,7 @@ create table PERIODO
 /*==============================================================*/
 create table ROL
 (
-   ROL_ID               numeric(8,0) not null,
+   ROL_ID               int not null,
    ROL_DESCRIPCION      varchar(50),
    primary key (ROL_ID)
 );
@@ -68,7 +68,7 @@ create table ROL
 /*==============================================================*/
    create table TIPOLABOR
    (
-      TL_ID                numeric(8,0) not null,
+      TL_ID                int not null AUTO_INCREMENT,
       TL_CODIGO            varchar(3),
       TL_DESCRIPCION       varchar(50),
       primary key (TL_ID)
@@ -79,8 +79,8 @@ create table ROL
 /*==============================================================*/
 create table USEROL
 (
-   USR_IDENTIFICACION   numeric(8,0) not null,
-   ROL_ID               numeric(8,0) not null,
+   USR_IDENTIFICACION   numeric(12,0) not null,
+   ROL_ID               int not null,
    primary key (USR_IDENTIFICACION, ROL_ID)
 );
 
@@ -89,13 +89,13 @@ create table USEROL
 /*==============================================================*/
 create table USUARIO
 (
-   USR_IDENTIFICACION   numeric(8,0) not null,
+   USR_IDENTIFICACION   numeric(12,0) not null,
    USU_NOMBRE           varchar(50) not null,
    USU_APELLIDO         varchar(50),
    USU_GENERO           varchar(1) not null,
    USU_ESTUDIO          varchar(100),
    USU_CORREO           varchar(50) not null,
-   USU_CONTRASENA       varchar(50) not null,
+   USU_CONTRASENA       varchar(100) not null,
    USU_NOTIFICACION     char(1),
    primary key (USR_IDENTIFICACION)
 );

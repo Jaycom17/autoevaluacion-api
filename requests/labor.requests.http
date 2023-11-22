@@ -5,8 +5,8 @@ POST {{api}}/user/login
 Content-Type: application/json
 
 {
-  "usu_email": "jorejuelam@unicauca.edu.co",
-  "usu_contrasena": "juan123"
+  "usu_email": "cgarcias@unicauca.edu.co",
+  "usu_contrasena": "carl123"
 }
 
 ### post logout
