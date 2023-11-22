@@ -25,7 +25,7 @@ export const showLaborByName = async(req: Request, res: Response) => {
     } else if (labor === false) {
         res.status(404).json({ message: 'Labor no encontrada por nombre' });
     } else {
-        res.status(200).json(labor);
+        res.status(201).json(labor);
     }
 }
 
@@ -36,7 +36,7 @@ export const showLaborById = async(req: Request, res: Response) => {
     } else if (labor === false) {
         res.status(404).json({ message: 'Labor no encontrada por ID' });
     } else {
-        res.status(200).json(labor);
+        res.status(201).json(labor);
     }
 }
 
@@ -47,7 +47,7 @@ export const showLaborList = async(_req: Request, res: Response) => {
     } else if (labor === false) {
         res.status(404).json({ message: 'No se encontraron labores' });
     } else {
-        res.status(200).json(labor);
+        res.status(201).json(labor);
     }
 }
 
@@ -59,7 +59,7 @@ export const updateLabor = async(req: Request, res: Response) => {
     } else if (labor === false) {
         res.status(404).json({ status: 'error', message: 'Labor no encontrada para actualizar' });
     } else {
-        res.json(labor).status(200);
+        res.status(201).json({status: 'ok', message: 'Labor actualizada con éxito'});
     }
 }
 
