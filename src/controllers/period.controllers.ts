@@ -24,8 +24,8 @@ export const getPeriodList = async(_req: Request, res: Response) => {
 }
 
 export const updatePeriod = async (req: Request, res: Response) => {
-    const { per_id, per_nombre, per_fechainicio, per_fechafin} = req.body;
-    const period = await PeriodModel.updatePeriod(per_id, per_nombre, per_fechainicio, per_fechafin);
+    const {per_nombre, per_fechainicio, per_fechafin} = req.body;
+    const period = await PeriodModel.updatePeriod(parseInt(req.params.id), per_nombre, per_fechainicio, per_fechafin);
     res.json(period).status(200);
 }
 
