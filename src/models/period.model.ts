@@ -6,10 +6,10 @@ export class Period {
     public async createPeriod(perName: string, perInitDate: string, perFinishDate: string) {
         try {
             const [resul] = await pool.query<ResultSetHeader>(
-                'INSERT INTO PERIODO (PER_NOMBRE, PER_FECHAINICIO, PER_FECHAFIN) VALUES (?, ?, ?)',
+                'INSERT INTO periodo (per_nombre, per_fechainicio, per_fechafin) VALUES (?, ?, ?)',
                 [perName, perInitDate, perFinishDate]
             );
-            return resul.affectedRows!=0;
+            return resul.affectedRows != 0;
         } catch (error) {
             return null;
         }
@@ -18,7 +18,7 @@ export class Period {
         try {
             // Consultar la base de datos para obtener el usuario
             const [rows] = await pool.query<RowDataPacket[]>(
-                'SELECT * FROM PERIODO WHERE PER_ID = ?',
+                'SELECT per_id, per_nombre, per_fechainicio, per_fechafin FROM periodo WHERE per_id = ?',
                 [perId]
             );
             if (rows.length == 1) {
@@ -37,7 +37,7 @@ export class Period {
         try {
             // Consultar la base de datos para obtener el usuario
             const [rows] = await pool.query<RowDataPacket[]>(
-                'SELECT * FROM PERIODO WHERE PER_ID'
+                'select per_id, per_nombre, per_fechainicio, per_fechafin from periodo'
             );
             return rows;
         } catch (error) {
@@ -47,21 +47,21 @@ export class Period {
     public async updatePeriod(perId: number, perName: string, perInitDate: string, perFinishDate: string) {
         try {
             const [resul] = await pool.query<ResultSetHeader>(
-                'UPDATE PERIODO SET PER_NOMBRE = ?, PER_FECHAINICIO = ?, PER_FECHAFIN = ? WHERE PER_ID = ?',
+                'UPDATE periodo SET per_nombre = ?, per_fechainicio = ?, per_fechafin = ? WHERE per_id = ?',
                 [perName, perInitDate, perFinishDate, perId]
             );
-            return resul.affectedRows!=0;
+            return resul.affectedRows != 0;
         } catch (error) {
             return null;
         }
     }
 
-    public async deletePeriod(perId: number){
+    public async deletePeriod(perId: number) {
         try {
             const [rows] = await pool.query<ResultSetHeader>(
-                'DELETE FROM PERIODO WHERE PER_ID = ?',
+                'DELETE FROM periodo WHERE per_id = ?',
                 [perId]
-            );       
+            );
             return rows.affectedRows != 0;
         } catch (error) {
             return null;
