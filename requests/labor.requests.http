@@ -24,11 +24,10 @@ Content-Type: application/json
 }
 
 ### put labor
-PUT {{api}}/labor
+PUT {{api}}/labor/4
 Content-Type: application/json
 
 {
-    "LAB_ID": 1, 
     "TL_DESCRIPCION": "Docencia", 
     "LAB_NOMBRE": "Ingenieria de software 2", 
     "LAB_HORAS": 60
