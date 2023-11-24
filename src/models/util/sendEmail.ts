@@ -35,7 +35,7 @@ export const sendEmailToCordinator = async (user: any) => {
       " " +
       user.usu_apellido +
       " ha creado una autoevaluación",
-    text: content,
+    html: content,
   };
 
   transporter.sendMail(mailOptions, (error, info) => {

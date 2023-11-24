@@ -6,8 +6,8 @@ const LaborModel = new Labor();
 const queryString = require('querystring');
 
 export const createLabor = async(req: Request, res: Response) => {
-    const { TL_DESCRIPCION, LAB_NOMBRE, LAB_HORAS} = req.body;
-    const labor =  await LaborModel.createLabor(TL_DESCRIPCION, LAB_NOMBRE, LAB_HORAS);
+    const { tl_descripcion, lab_nombre, lab_horas} = req.body;
+    const labor =  await LaborModel.createLabor(tl_descripcion, lab_nombre, lab_horas);
     if(!labor){
         res.status(400).json({ status: 'error', message: 'Error al crear la labor' });
     }else{
@@ -52,8 +52,8 @@ export const showLaborList = async(_req: Request, res: Response) => {
 }
 
 export const updateLabor = async(req: Request, res: Response) => {
-    const { TL_DESCRIPCION, LAB_NOMBRE, LAB_HORAS } = req.body;
-    const labor =  await LaborModel.updateLabor(parseInt(req.params.id), TL_DESCRIPCION, LAB_NOMBRE, LAB_HORAS);
+    const { tl_descripcion, lab_nombre, lab_horas } = req.body;
+    const labor =  await LaborModel.updateLabor(parseInt(req.params.id), tl_descripcion, lab_nombre, lab_horas);
     if (labor === null) {
         res.status(500).json({ status: 'error', message: 'Error al actualizar la labor' });
     } else if (labor === false) {

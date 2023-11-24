@@ -1,13 +1,13 @@
 export interface Observer{
-    notify(action: string, idUser: number): void;
+    notify(action: string, data: any): void;
 }
 
 export abstract class Article {
     private observers: Array<Observer> = new Array();
 
-    public notify(action: string, idUser: number){
+    public notify(action: string, data: any){
         for(let o of this.observers){
-            o.notify(action, idUser);
+            o.notify(action, data);
         }
     }
 

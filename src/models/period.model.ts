@@ -18,7 +18,7 @@ export class Period {
         try {
             // Consultar la base de datos para obtener el usuario
             const [rows] = await pool.query<RowDataPacket[]>(
-                'SELECT per_id, per_nombre, per_fechainicio, per_fechafin FROM periodo WHERE per_id = ?',
+                'SELECT per_id, per_nombre, DATE_FORMAT(PER_FECHAINICIO, \'%Y-%m-%d\') AS per_fechainicio, DATE_FORMAT(PER_FECHAFIN, \'%Y-%m-%d\') AS per_fechafin FROM PERIODO WHERE PER_ID = ?',
                 [perId]
             );
             if (rows.length == 1) {
@@ -37,7 +37,7 @@ export class Period {
         try {
             // Consultar la base de datos para obtener el usuario
             const [rows] = await pool.query<RowDataPacket[]>(
-                'select per_id, per_nombre, per_fechainicio, per_fechafin from periodo'
+                'SELECT per_id, per_nombre, DATE_FORMAT(per_fechainicio, \'%Y-%m-%d\') AS per_fechainicio, DATE_FORMAT(per_fechafin, \'%Y-%m-%d\') AS per_fechafin FROM PERIODO'
             );
             return rows;
         } catch (error) {

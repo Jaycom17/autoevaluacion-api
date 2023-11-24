@@ -117,3 +117,40 @@ alter table USEROL add constraint FK_USEROL foreign key (USR_IDENTIFICACION)
 
 alter table USEROL add constraint FK_USEROL2 foreign key (ROL_ID)
       references ROL (ROL_ID) on delete restrict on update restrict;
+
+      /*Consultas por implementar*/
+      /*Promedio de puntaje por labor*/
+      SELECT LABOR.LAB_ID, LABOR.LAB_NOMBRE, AVG(EVALUACION.EVA_PUNTAJE) AS PROMEDIO_PUNTAJE
+FROM EVALUACION
+JOIN LABOR ON EVALUACION.LAB_ID = LABOR.LAB_ID
+GROUP BY LABOR.LAB_ID, LABOR.LAB_NOMBRE;
+
+/*promedio de puntjae por periodo*/
+SELECT PERIODO.PER_ID, PERIODO.PER_NOMBRE, AVG(EVALUACION.EVA_PUNTAJE) AS PROMEDIO_PUNTAJE
+FROM EVALUACION
+JOIN PERIODO ON EVALUACION.PER_ID = PERIODO.PER_ID
+GROUP BY PERIODO.PER_ID, PERIODO.PER_NOMBRE;
+
+/**cantidad de evaluaciones por tipo de labor*/
+SELECT TIPOLABOR.TL_DESCRIPCION, COUNT(EVALUACION.EVA_ID) AS CANTIDAD_EVALUACIONES
+FROM EVALUACION
+JOIN LABOR ON EVALUACION.LAB_ID = LABOR.LAB_ID
+JOIN TIPOLABOR ON LABOR.TL_ID = TIPOLABOR.TL_ID
+GROUP BY TIPOLABOR.TL_DESCRIPCION;
+
+
+/*Puntaje promedio por periodo y tipo de labor*/
+SELECT PERIODO.PER_NOMBRE, TIPOLABOR.TL_DESCRIPCION, AVG(EVALUACION.EVA_PUNTAJE) AS PROMEDIO_PUNTAJE
+FROM EVALUACION
+JOIN PERIODO ON EVALUACION.PER_ID = PERIODO.PER_ID
+JOIN LABOR ON EVALUACION.LAB_ID = LABOR.LAB_ID
+JOIN TIPOLABOR ON LABOR.TL_ID = TIPOLABOR.TL_ID
+GROUP BY PERIODO.PER_NOMBRE, TIPOLABOR.TL_DESCRIPCION;
+
+
+select eva_id, usu_nombre, usu_apellido, usuario.usr_identificacion, lab_nombre, tl_descripcion, lab_horas, per_nombre, per_fechainicio, per_fechafin
+from evaluacion inner join usuario on usuario.usr_identificacion = evaluacion.usr_identificacion inner join labor
+on labor.lab_id = evaluacion.lab_id inner join tipolabor
+on labor.tl_id = tipolabor.tl_id inner join periodo
+on periodo.per_id = evaluacion.per_id
+where usuario.usr_identificacion = 12345678 and eva_estado = 0

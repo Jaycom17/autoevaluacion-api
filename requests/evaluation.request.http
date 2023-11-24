@@ -20,3 +20,6 @@ Content-Type: application/json
   "eva_state": 0
 }
 
+###get evaluation by professor
+GET {{api}}/evaluation/professor/12345678
+

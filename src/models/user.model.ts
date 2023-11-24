@@ -6,7 +6,7 @@ import { pool } from "../db/database";
 import { ResultSetHeader, RowDataPacket } from "mysql2";
 import { Observer } from "./observer";
 
-import { sendEmailToProfessor } from "./util/sendEmail";
+import { sendEmailToCordinator, sendEmailToProfessor } from "./util/sendEmail";
 
 export class User implements Observer {
   constructor() {}
@@ -14,7 +14,7 @@ export class User implements Observer {
   public async login(userEmail: string, userPassword: string) {
     try {
       const [rows] = await pool.query<RowDataPacket[]>(
-        "SELECT usu_correo, usu_contrasena, USU_NOTIFICACION, ROL_DESCRIPCION FROM USUARIO inner join USEROL on USUARIO.USR_IDENTIFICACION = USEROL.USR_IDENTIFICACION inner join ROL on USEROL.ROL_ID = ROL.ROL_ID WHERE USU_CORREO = ?",
+        "SELECT usuario.usr_identificacion, usu_correo, usu_contrasena, USU_NOTIFICACION, ROL_DESCRIPCION FROM USUARIO inner join USEROL on USUARIO.USR_IDENTIFICACION = USEROL.USR_IDENTIFICACION inner join ROL on USEROL.ROL_ID = ROL.ROL_ID WHERE USU_CORREO = ?",
         [userEmail]
       );
 
@@ -32,6 +32,7 @@ export class User implements Observer {
       }
 
       const token = await createAccessToken({
+        usr_identificacion: userData.usr_identificacion,
         usu_correo: userData.usu_correo,
         usu_notificacion: userData.USU_NOTIFICACION,
         usu_rol: userData.ROL_DESCRIPCION
@@ -40,6 +41,7 @@ export class User implements Observer {
       return {
         token,
         userData: {
+        usr_identificacion: userData.usr_identificacion,
           usu_correo: userData.usu_correo,
           usu_notificacion: userData.USU_NOTIFICACION,
           usu_rol: userData.ROL_DESCRIPCION,
@@ -64,21 +66,33 @@ export class User implements Observer {
     }
   }
 
-  public async notify(action: string, idUser: number) {
+  public async notify(action: string, data: any) {
     try {
       switch (action) {
         case "createEvaluation":
           const [rows] = await pool.query<RowDataPacket[]>(
-            "SELECT usu_correo FROM USUARIO where USR_IDENTIFICACION = ?",[idUser]
+            "SELECT usu_correo FROM USUARIO where USR_IDENTIFICACION = ?",[data]
           );
 
-          await pool.query<ResultSetHeader>("update usuario set usu_notificacion = 's' where usr_identificacion = ?", [idUser]);
+          await pool.query<ResultSetHeader>("update usuario set usu_notificacion = 's' where usr_identificacion = ?", [data]);
           
           sendEmailToProfessor(rows[0]);
 
           break;
 
         case "deleteEvaluation":
+
+
+          break;
+
+        case "makeEvaluation":
+          const [rows2] = await pool.query<RowDataPacket[]>("SELECT usu_correo FROM USUARIO inner join userol on userol.usr_identificacion = usuario.usr_identificacion inner join rol on rol.rol_id = userol.rol_id where rol_descripcion = 'coordinador'");
+
+          const [rows3] = await pool.query<RowDataPacket[]>("SELECT usu_nombre, usu_apellido FROM USUARIO where USR_IDENTIFICACION = ?",[data.usr_identificacion]);
+
+          let user = {...rows3, usu_correo: rows2[0].usu_correo}
+
+          sendEmailToCordinator(user);
 
           break;
 

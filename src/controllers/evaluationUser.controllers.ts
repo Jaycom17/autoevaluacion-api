@@ -58,18 +58,14 @@ export const userLogOut = async (_req: Request, res: Response) => {
 
 export const createEvaluation = async (req: Request, res: Response) => {
   const {
-    eva_id,
-    eva_labor,
-    eva_period,
     usr_id,
-    eva_state
+    eva_period,
+    evaluations
   } = req.body;
   const evaluation = await EvaluationModel.createEvaluation(
-    eva_id,
-    eva_labor,
-    eva_period,
     usr_id,
-    eva_state
+    eva_period,
+    evaluations
   );
   if(evaluation){
     res.status(201).json({message: "Evaluación creada con éxito"});
@@ -86,7 +82,7 @@ export const updateEvaluation = async (req: Request, res: Response) => {
     usr_id,
     eva_state
   } = req.body;
-  const evaluation = await EvaluationModel.createEvaluation(
+  const evaluation = await EvaluationModel.updateEvaluation(
     eva_id,
     eva_labor,
     eva_period,
@@ -100,6 +96,16 @@ export const updateEvaluation = async (req: Request, res: Response) => {
     res.status(400).json({message: "Error al crear la evaluación"});
   }
 };
+
+export const getEvaluationProffesor = async (req: Request, res: Response) => {
+  const usrId: number = parseInt(req.params.id);
+  const evaluation = await EvaluationModel.getEvaluationProffesor(usrId);
+  if(evaluation){
+    res.status(201).json(evaluation);
+  }else{
+    res.status(400).json({message: "Error al obtener las evaluaciones"});
+  }
+}
 
 export const deleteEvaluation = async (req: Request, res: Response) => {
   const evaId: number = parseInt(req.params.id);
@@ -116,11 +122,12 @@ export const checkEvaluation = async (req: Request, res: Response) => {
 };
 
 export const makeEvaluation = async (req: Request, res: Response) => {
-  const { evaId, evaScore, evaResult } = req.body;
+  const { evaId, evaScore, evaResult, user } = req.body;
   const evaluation = await EvaluationModel.makeEvaluation(
     evaId,
     evaScore,
-    evaResult
+    evaResult,
+    user
   );
   res.json(evaluation).status(201);
 };
