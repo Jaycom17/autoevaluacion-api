@@ -71,26 +71,33 @@ export class User implements Observer {
       switch (action) {
         case "createEvaluation":
           const [rows] = await pool.query<RowDataPacket[]>(
-            "SELECT usu_correo FROM USUARIO where USR_IDENTIFICACION = ?",[data]
+            "SELECT usu_correo FROM USUARIO where USR_IDENTIFICACION = ?",
+            [data]
           );
 
-          await pool.query<ResultSetHeader>("update usuario set usu_notificacion = 's' where usr_identificacion = ?", [data]);
-          
+          await pool.query<ResultSetHeader>(
+            "update usuario set usu_notificacion = 's' where usr_identificacion = ?",
+            [data]
+          );
+
           sendEmailToProfessor(rows[0]);
 
           break;
 
         case "deleteEvaluation":
-
-
           break;
 
         case "makeEvaluation":
-          const [rows2] = await pool.query<RowDataPacket[]>("SELECT usu_correo FROM USUARIO inner join userol on userol.usr_identificacion = usuario.usr_identificacion inner join rol on rol.rol_id = userol.rol_id where rol_descripcion = 'coordinador'");
+          const [rows2] = await pool.query<RowDataPacket[]>(
+            "SELECT usu_correo FROM USUARIO inner join userol on userol.usr_identificacion = usuario.usr_identificacion inner join rol on rol.rol_id = userol.rol_id where rol_descripcion = 'coordinador'"
+          );
 
-          const [rows3] = await pool.query<RowDataPacket[]>("SELECT usu_nombre, usu_apellido FROM USUARIO where USR_IDENTIFICACION = ?",[data.usr_identificacion]);
+          const [rows3] = await pool.query<RowDataPacket[]>(
+            "SELECT usu_nombre, usu_apellido FROM USUARIO where USR_IDENTIFICACION = ?",
+            [data.usr_identificacion]
+          );
 
-          let user = {...rows3, usu_correo: rows2[0].usu_correo}
+          const user = { ...rows3[0], usu_correo: rows2[0].usu_correo };
 
           sendEmailToCordinator(user);
 

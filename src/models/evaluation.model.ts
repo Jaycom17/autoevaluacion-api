@@ -13,7 +13,7 @@ export class Evaluation extends Article{
     public async getEvaluationProffesor(usrId: number) {
         try {
             const [rows] = await pool.query<RowDataPacket[]>(
-                'select eva_id, usu_nombre, usu_apellido, eva_estado, usuario.usr_identificacion, lab_nombre, tl_descripcion, lab_horas, per_nombre, per_fechainicio, per_fechafin from evaluacion inner join usuario on usuario.usr_identificacion = evaluacion.usr_identificacion inner join labor on labor.lab_id = evaluacion.lab_id inner join tipolabor on labor.tl_id = tipolabor.tl_id inner join periodo on periodo.per_id = evaluacion.per_id where usuario.usr_identificacion = ? and eva_estado = 0',
+                'select eva_id, usu_nombre, usu_apellido, eva_puntaje, eva_resultado, eva_estado, usuario.usr_identificacion, lab_nombre, tl_descripcion, lab_horas, per_nombre, per_fechainicio, per_fechafin from evaluacion inner join usuario on usuario.usr_identificacion = evaluacion.usr_identificacion inner join labor on labor.lab_id = evaluacion.lab_id inner join tipolabor on labor.tl_id = tipolabor.tl_id inner join periodo on periodo.per_id = evaluacion.per_id where usuario.usr_identificacion = ?',
                 [usrId]
             );
             return rows;
@@ -57,7 +57,7 @@ export class Evaluation extends Article{
     public async makeEvaluation(evaId: number, evaScore: number, evaResult: string, user: any) {
         try {
             const [result] = await pool.query<ResultSetHeader>(
-                'UPDATE EVALUACION SET EVA_PUNTAJE = ?, EVA_RESULTADO = ? WHERE EVA_ID = ?',
+                'UPDATE EVALUACION SET EVA_PUNTAJE = ?, EVA_RESULTADO = ?, EVA_ESTADO = 1 WHERE EVA_ID = ?',
                 [evaScore, evaResult, evaId]
             );
             
@@ -117,7 +117,9 @@ export class Evaluation extends Article{
                 'Update EVALUACION SET LAB_ID = ?, PER_ID = ?, USR_IDENTIFICACION = ?, ROL_ID = ?, EVA_ESTADO = ?, EVA_PUNTAJE = ?, EVA_RESULTADO = ? WHERE EVA_ID = ?',
                 [rows[0].lab_id, rows3[0].per_id, usrId, rows2[0].rol_id,evaState, 0, "",evaId]
             );
-            //this.notify("createEvaluation");
+
+            this.notify("createEvaluation", usrId);
+
             return result.affectedRows!==0;
             
 
@@ -127,9 +129,9 @@ export class Evaluation extends Article{
             return false;
         }
     }
-    public async getEvaluation() {
+    public async getEvaluations() {
         try {
-            const [rows] = await pool.query('SELECT * FROM evaluacion');
+            const [rows] = await pool.query('select eva_id, usu_nombre, eva_puntaje, eva_resultado, usu_apellido, eva_estado, usuario.usr_identificacion, lab_nombre, tl_descripcion, lab_horas, per_nombre, per_fechainicio, per_fechafin from evaluacion inner join usuario on usuario.usr_identificacion = evaluacion.usr_identificacion inner join labor on labor.lab_id = evaluacion.lab_id inner join tipolabor on labor.tl_id = tipolabor.tl_id inner join periodo on periodo.per_id = evaluacion.per_id');
             return rows;
         } catch (error) {
             console.error('Error al obtener las evaluaciones:', error);

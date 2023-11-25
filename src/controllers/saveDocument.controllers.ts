@@ -1,16 +1,32 @@
-/*import { Request, Response } from "express";
+import fs from 'fs';
+import path from 'path';
+import { savePath } from '../config';
 
-export const saveDocument = async (req: Request, res: Response) => {
-    const { doc_name, doc_description, doc_file, usr_id } = req.body;
-    const document = await DocumentModel.saveDocument(
-        doc_name,
-        doc_description,
-        doc_file,
-        usr_id
-    );
-    if (document) {
-        res.status(201).json({ message: "Documento creado con éxito" });
-    } else {
-        res.status(400).json({ message: "Error al crear el documento" });
+export const saveDocument = async (req: any, res: any) => {
+    if (!req.file) {
+        return res.status(400).send('No file uploaded');
     }
-};*/
+
+    const sourcePath = req.file.path;
+    const destinationPath = path.join(savePath, req.file.originalname);
+    
+
+    fs.rename(sourcePath, destinationPath, (error: any) => {
+        if (error) {
+            return res.status(500).send('Error while saving the file');
+        }
+
+        return res.status(201).send('File uploaded successfully');
+    });
+};
+
+export const getDocument = async (req: any, res: any) => {
+    console.log(req.params.filename);
+    const filePath = path.join(savePath, req.params.filename);
+
+    res.download(filePath, req.params.filename, (error: any) => {
+        if (error) {
+            console.log(error);
+        }
+    });
+}

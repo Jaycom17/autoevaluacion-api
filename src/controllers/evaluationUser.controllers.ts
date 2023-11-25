@@ -122,20 +122,19 @@ export const checkEvaluation = async (req: Request, res: Response) => {
 };
 
 export const makeEvaluation = async (req: Request, res: Response) => {
-  const { evaId, evaScore, evaResult, user } = req.body;
+  const { eva_id, eva_puntaje, eva_resultado, user } = req.body;
   const evaluation = await EvaluationModel.makeEvaluation(
-    evaId,
-    evaScore,
-    evaResult,
+    eva_id,
+    eva_puntaje,
+    eva_resultado,
     user
   );
   res.json(evaluation).status(201);
 };
 
-export const getEvaluation = async (_req: Request, res: Response) => {
+export const getEvaluations = async (_req: Request, res: Response) => {
   try {
-    // No necesitas el ID si estás obteniendo todas las evaluaciones
-    const evaluations = await EvaluationModel.getEvaluation();
+    const evaluations = await EvaluationModel.getEvaluations();
 
     res.status(200).json(evaluations);
   } catch (error) {

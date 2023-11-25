@@ -1,5 +1,6 @@
 import { config } from "dotenv";
 import nodemailer from 'nodemailer';
+import path from 'path';
 
 config();
 
@@ -39,3 +40,5 @@ export const ROLES = {
     CORDINATOR: "coordinador",
     RECTOR: "rector"
 };
+
+export const savePath = path.join(__dirname, '..', 'uploads');

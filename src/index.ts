@@ -9,6 +9,7 @@ import laborRouter from "./routes/labors.routes";
 import periodRouter from "./routes/period.routes";
 import useRolRouter from "./routes/useRol.routes";
 import evaluationRouter from "./routes/evalution.routes";
+import saveDocumentRouter from "./routes/saveDocument.routes";
 
 import cookieParser from "cookie-parser";
 
@@ -30,6 +31,7 @@ app.use('/api', laborRouter);
 app.use('/api', periodRouter);
 app.use('/api', useRolRouter);
 app.use('/api', evaluationRouter);
+app.use('/api', saveDocumentRouter);
 
 app.listen(PORT, () => {
   console.log("server listening on port: ", PORT);
