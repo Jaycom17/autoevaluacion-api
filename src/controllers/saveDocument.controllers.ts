@@ -18,15 +18,24 @@ export const saveDocument = async (req: any, res: any) => {
 
         return res.status(201).send('File uploaded successfully');
     });
-};
+}
 
 export const getDocument = async (req: any, res: any) => {
     console.log(req.params.filename);
     const filePath = path.join(savePath, req.params.filename);
 
-    res.download(filePath, req.params.filename, (error: any) => {
+    fs.readFile(filePath, (error: any, data: any) => {
+        if (error) {
+            console.log(error);
+            return res.status(500).send('Error while reading the file');
+        }
+
+        res.setHeader('Content-Type', 'application/octet-stream');
+        res.setHeader('Content-Disposition', `attachment; filename=${req.params.filename}`);
+        res.send(data);
         if (error) {
             console.log(error);
         }
     });
 }
+

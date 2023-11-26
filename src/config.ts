@@ -24,7 +24,7 @@ export const laborDictionary: Record <string, number> = {
     'Servicios': 7,
     'Extensión': 8,
     'Capacitación': 9,
-    'Otros Servicios': 10,
+    'Otros Servicios': 10,  
 }
 
 export const transporter = nodemailer.createTransport({
@@ -38,7 +38,7 @@ export const transporter = nodemailer.createTransport({
 export const ROLES = {
     PROFESSOR: "docente",
     CORDINATOR: "coordinador",
-    RECTOR: "rector"
+    RECTOR: "decano"
 };
 
 export const savePath = path.join(__dirname, '..', 'uploads');

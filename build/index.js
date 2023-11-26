@@ -4,15 +4,27 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const cors_1 = __importDefault(require("cors"));
 const config_1 = require("./config");
 const users_routes_1 = __importDefault(require("./routes/users.routes"));
 const labors_routes_1 = __importDefault(require("./routes/labors.routes"));
+const period_routes_1 = __importDefault(require("./routes/period.routes"));
+const useRol_routes_1 = __importDefault(require("./routes/useRol.routes"));
+const evalution_routes_1 = __importDefault(require("./routes/evalution.routes"));
+const saveDocument_routes_1 = __importDefault(require("./routes/saveDocument.routes"));
+const stats_routes_1 = __importDefault(require("./routes/stats.routes"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const app = (0, express_1.default)();
+app.use((0, cors_1.default)({ origin: true, credentials: true }));
 app.use((0, cookie_parser_1.default)());
 app.use(express_1.default.json());
 app.use('/api', users_routes_1.default);
 app.use('/api', labors_routes_1.default);
+app.use('/api', period_routes_1.default);
+app.use('/api', useRol_routes_1.default);
+app.use('/api', evalution_routes_1.default);
+app.use('/api', saveDocument_routes_1.default);
+app.use('/api', stats_routes_1.default);
 app.listen(config_1.PORT, () => {
     console.log("server listening on port: ", config_1.PORT);
 });

@@ -1,0 +1,13 @@
+@api = http://localhost:3000/api
+
+### post login
+POST {{api}}/user/login
+Content-Type: application/json
+
+{
+  "usu_email": "jorejuelam@unicauca.edu.co",
+  "usu_contrasena": "juan123"
+}
+
+### get average score by labor
+GET {{api}}/stats/avgScrPrLbr

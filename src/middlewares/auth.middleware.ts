@@ -73,8 +73,8 @@ export const authCordinator = (req: Request, res: Response, next: NextFunction) 
         return res.status(401).json({ message: "Token is not valid" });
       }
 
-      if(user.usu_rol !== ROLES.CORDINATOR){
-        return res.status(401).json({ message: "User is not a coordinator" });
+      if(user.usu_rol !== ROLES.CORDINATOR && user.usu_rol !== ROLES.RECTOR){
+        return res.status(401).json({ message: "User is not a coordinator or dean" });
       }
 
       req.body.user = user;
