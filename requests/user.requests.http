@@ -17,13 +17,13 @@ POST {{api}}/user/register
 Content-Type: application/json
 
 {
-  "userId": 1,
-  "userName": "Julia2n",
-  "userLastName": "Carvaja2l",
+  "userId": 10101010,
+  "userName": "Usuario",
+  "userLastName": "Prueba",
   "userGenre": "M",
   "userStudy": "Ingenieria en sistemas",
-  "userEmail": "jucarvajal@unicauca.edu.co",
-  "userPassword": "obando123",
+  "userEmail": "juanorejuela499@gmail.com",
+  "userPassword": "juan123",
   "usuRol": "docente"
 }
 

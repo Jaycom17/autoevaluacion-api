@@ -14,7 +14,7 @@ export class User implements Observer {
   public async login(userEmail: string, userPassword: string) {
     try {
       const [rows] = await pool.query<RowDataPacket[]>(
-        "SELECT usuario.usr_identificacion, usu_correo, usu_contrasena, USU_NOTIFICACION, ROL_DESCRIPCION FROM USUARIO inner join USEROL on USUARIO.USR_IDENTIFICACION = USEROL.USR_IDENTIFICACION inner join ROL on USEROL.ROL_ID = ROL.ROL_ID WHERE USU_CORREO = ?",
+        "SELECT usuario.usr_identificacion, usu_correo, usu_contrasena, USU_NOTIFICACION, ROL_DESCRIPCION FROM USUARIO inner join USEROL on USUARIO.USR_IDENTIFICACION = USEROL.USR_IDENTIFICACION inner join ROL on USEROL.ROL_ID = ROL.ROL_ID WHERE USU_CORREO = ? order by usu_nombre, usu_apellido, usr_identificacion",
         [userEmail]
       );
 
@@ -56,7 +56,7 @@ export class User implements Observer {
   public async getProfessors() {
     try {
       const [rows] = await pool.query<RowDataPacket[]>(
-        "SELECT usuario.usr_identificacion, usuario.usu_nombre, usuario.usu_apellido FROM usuario inner join userol on usuario.usr_identificacion = userol.usr_identificacion inner join rol on userol.rol_id = rol.rol_id WHERE rol.rol_descripcion = 'docente'"
+        "SELECT usuario.usr_identificacion, usuario.usu_nombre, usuario.usu_apellido FROM usuario inner join userol on usuario.usr_identificacion = userol.usr_identificacion inner join rol on userol.rol_id = rol.rol_id WHERE rol.rol_descripcion = 'docente' order by usu_nombre, usu_apellido, usr_identificacion"
       );
 
       return rows;
@@ -94,6 +94,11 @@ export class User implements Observer {
 
           const [rows3] = await pool.query<RowDataPacket[]>(
             "SELECT usu_nombre, usu_apellido FROM USUARIO where USR_IDENTIFICACION = ?",
+            [data.usr_identificacion]
+          );
+
+          await pool.query<ResultSetHeader>(
+            "update usuario set usu_notificacion = 'n' where usr_identificacion = ?",
             [data.usr_identificacion]
           );
 

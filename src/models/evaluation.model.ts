@@ -13,7 +13,7 @@ export class Evaluation extends Article{
     public async getEvaluationProffesor(usrId: number) {
         try {
             const [rows] = await pool.query<RowDataPacket[]>(
-                'select eva_id, usu_nombre, usu_apellido, eva_puntaje, eva_resultado, eva_estado, usuario.usr_identificacion, lab_nombre, tl_descripcion, lab_horas, per_nombre, per_fechainicio, per_fechafin from evaluacion inner join usuario on usuario.usr_identificacion = evaluacion.usr_identificacion inner join labor on labor.lab_id = evaluacion.lab_id inner join tipolabor on labor.tl_id = tipolabor.tl_id inner join periodo on periodo.per_id = evaluacion.per_id where usuario.usr_identificacion = ?',
+                'select eva_id, usu_nombre, usu_apellido, eva_puntaje, eva_resultado, eva_estado, usuario.usr_identificacion, lab_nombre, tl_descripcion, lab_horas, per_nombre, per_fechainicio, per_fechafin from evaluacion inner join usuario on usuario.usr_identificacion = evaluacion.usr_identificacion inner join labor on labor.lab_id = evaluacion.lab_id inner join tipolabor on labor.tl_id = tipolabor.tl_id inner join periodo on periodo.per_id = evaluacion.per_id where usuario.usr_identificacion = ? order by usu_nombre, usu_apellido, per_nombre, lab_nombre',
                 [usrId]
             );
             return rows;
@@ -131,7 +131,7 @@ export class Evaluation extends Article{
     }
     public async getEvaluations() {
         try {
-            const [rows] = await pool.query('select eva_id, usu_nombre, eva_puntaje, eva_resultado, usu_apellido, eva_estado, usuario.usr_identificacion, lab_nombre, tl_descripcion, lab_horas, per_nombre, per_fechainicio, per_fechafin from evaluacion inner join usuario on usuario.usr_identificacion = evaluacion.usr_identificacion inner join labor on labor.lab_id = evaluacion.lab_id inner join tipolabor on labor.tl_id = tipolabor.tl_id inner join periodo on periodo.per_id = evaluacion.per_id');
+            const [rows] = await pool.query('select eva_id, usu_nombre, eva_puntaje, eva_resultado, usu_apellido, eva_estado, usuario.usr_identificacion, lab_nombre, tl_descripcion, lab_horas, per_nombre, per_fechainicio, per_fechafin from evaluacion inner join usuario on usuario.usr_identificacion = evaluacion.usr_identificacion inner join labor on labor.lab_id = evaluacion.lab_id inner join tipolabor on labor.tl_id = tipolabor.tl_id inner join periodo on periodo.per_id = evaluacion.per_id order by usu_nombre, usu_apellido, per_nombre, lab_nombre');
             return rows;
         } catch (error) {
             console.error('Error al obtener las evaluaciones:', error);

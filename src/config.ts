@@ -12,7 +12,7 @@ export const DB_DATABASE = process.env.DB_DATABASE || "dbAutoevaluacion";
 export const TOKEN_SECRET = process.env.TOKEN_SECRET || "autoevaluationToken";
 export const EMAIL = process.env.EMAIL || "autoevaluacionesunicauca@gmail.com";
 export const PASSWORD = process.env.PASSWORD || "pyzibcpuxesqpbba";
-export const URL = process.env.URL || "http://localhost:5173/autoevaluaciones";
+export const URL = process.env.URL || "https://app-autoevaluaciones.vercel.app";
 
 export const laborDictionary: Record <string, number> = {
     'Docencia': 1,

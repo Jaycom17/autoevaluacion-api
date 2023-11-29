@@ -25,7 +25,7 @@ export class Labor {
     public async showLaborByName(labName: string){
         try{
             const [row] = await pool.query<RowDataPacket[]>(
-                'SELECT * FROM LABOR WHERE LAB_NOMBRE = ?',
+                'SELECT * FROM LABOR WHERE LAB_NOMBRE = ? order by lab_nombre',
                 [labName] 
             );
             if(row.length == 0){
@@ -40,7 +40,7 @@ export class Labor {
     public async showLaborById(labId: number){
         try{
             const [row] = await pool.query<RowDataPacket[]>(
-                'SELECT lab_id, tl_descripcion, lab_nombre, lab_horas FROM LABOR INNER JOIN TIPOLABOR ON LABOR.TL_ID = TIPOLABOR.TL_ID WHERE LAB_ID = ?',
+                'SELECT lab_id, tl_descripcion, lab_nombre, lab_horas FROM LABOR INNER JOIN TIPOLABOR ON LABOR.TL_ID = TIPOLABOR.TL_ID WHERE LAB_ID = ? order by lab_nombre',
                 [labId] 
             );
             if(row.length == 0){
@@ -55,7 +55,7 @@ export class Labor {
     public async showLaborList(){
         try{
             const [rows] = await pool.query<RowDataPacket[]>(
-                'select lab_id, tl_descripcion, lab_horas, lab_nombre from labor inner join tipolabor on labor.tl_id = tipolabor.tl_id'
+                'select lab_id, tl_descripcion, lab_horas, lab_nombre from labor inner join tipolabor on labor.tl_id = tipolabor.tl_id order by lab_nombre'
             );
             if(rows.length == 0){
                 return false;

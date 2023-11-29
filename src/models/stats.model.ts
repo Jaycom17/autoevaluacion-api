@@ -9,7 +9,7 @@ export class Stats {
     public async getAvgScrPrLbr(){
         try {
             const [result] = await pool.query<RowDataPacket[]>(
-                'select labor.lab_id, labor.lab_nombre as label, avg(evaluacion.eva_puntaje) as value from evaluacion join labor on evaluacion.lab_id = labor.lab_id where evaluacion.eva_estado = 1 group by labor.lab_id, labor.lab_nombre'
+                'select labor.lab_id, labor.lab_nombre as label, avg(evaluacion.eva_puntaje) as value from evaluacion join labor on evaluacion.lab_id = labor.lab_id where evaluacion.eva_estado = 1 group by labor.lab_id, labor.lab_nombre order by labor.lab_nombre'
             );
             if(result.length == 0) {
                 return null;
@@ -24,7 +24,7 @@ export class Stats {
     public async getAvgScrPrPrd(){
         try {
             const [result] = await pool.query<RowDataPacket[]>(
-                'select periodo.per_id, periodo.per_nombre as label, avg(evaluacion.eva_puntaje) as value from evaluacion join periodo on evaluacion.per_id = periodo.per_id  where evaluacion.eva_estado = 1  group by periodo.per_id, periodo.per_nombre'
+                'select periodo.per_id, periodo.per_nombre as label, avg(evaluacion.eva_puntaje) as value from evaluacion join periodo on evaluacion.per_id = periodo.per_id  where evaluacion.eva_estado = 1  group by periodo.per_id, periodo.per_nombre order by periodo.per_nombre'
             );
             if(result.length == 0) {
                 return null;
@@ -39,7 +39,7 @@ export class Stats {
     public async getEvalCntPrLbrTp(){
         try {
             const [result] = await pool.query<RowDataPacket[]>(
-                'select tipolabor.tl_descripcion as label, count(evaluacion.eva_id) as value from evaluacion join labor on evaluacion.lab_id = labor.lab_id join tipolabor on labor.tl_id = tipolabor.tl_id where evaluacion.eva_estado = 1  group by tipolabor.tl_descripcion'
+                'select tipolabor.tl_descripcion as label, count(evaluacion.eva_id) as value from evaluacion join labor on evaluacion.lab_id = labor.lab_id join tipolabor on labor.tl_id = tipolabor.tl_id where evaluacion.eva_estado = 1  group by tipolabor.tl_descripcion order by tipolabor.tl_descripcion'
             );
             if(result.length == 0) {
                 return null;
@@ -54,7 +54,7 @@ export class Stats {
     public async getAvgPrLbrTpPrd(){
         try {
             const [result] = await pool.query<RowDataPacket[]>(
-                'select periodo.per_nombre as label, tipolabor.tl_descripcion as label, avg(evaluacion.eva_puntaje) as value from evaluacion join periodo on evaluacion.per_id = periodo.per_id join labor on evaluacion.lab_id = labor.lab_id join tipolabor on labor.tl_id = tipolabor.tl_id group by periodo.per_nombre, tipolabor.tl_descripcion'
+                'select periodo.per_nombre as label, tipolabor.tl_descripcion as label, avg(evaluacion.eva_puntaje) as value from evaluacion join periodo on evaluacion.per_id = periodo.per_id join labor on evaluacion.lab_id = labor.lab_id join tipolabor on labor.tl_id = tipolabor.tl_id group by periodo.per_nombre, tipolabor.tl_descripcion order by periodo.per_nombre, tipolabor.tl_descripcion'
             );
             if(result.length == 0) {
                 return null;
