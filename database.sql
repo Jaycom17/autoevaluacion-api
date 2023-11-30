@@ -35,7 +35,7 @@ CREATE TABLE LABOR
 (
    LAB_ID               int NOT NULL AUTO_INCREMENT,
    TL_ID                NUMERIC(8,0) NOT NULL,
-   LAB_NOMBRE           VARCHAR(50),
+   LAB_NOMBRE           VARCHAR(50) unique,
    LAB_HORAS            NUMERIC(8,0),
    PRIMARY KEY (LAB_ID)
 );
@@ -47,7 +47,7 @@ CREATE TABLE LABOR
 create table PERIODO
 (
    PER_ID               int not null AUTO_INCREMENT,
-   PER_NOMBRE           varchar(50),
+   PER_NOMBRE           varchar(50) unique,
    PER_FECHAINICIO      date,
    PER_FECHAFIN         date,
    primary key (PER_ID)
@@ -59,7 +59,7 @@ create table PERIODO
 create table ROL
 (
    ROL_ID               int not null,
-   ROL_DESCRIPCION      varchar(50),
+   ROL_DESCRIPCION      varchar(50) unique,
    primary key (ROL_ID)
 );
 
@@ -69,8 +69,8 @@ create table ROL
    create table TIPOLABOR
    (
       TL_ID                int not null AUTO_INCREMENT,
-      TL_CODIGO            varchar(3),
-      TL_DESCRIPCION       varchar(50),
+      TL_CODIGO            varchar(3) unique,
+      TL_DESCRIPCION       varchar(50) unique,
       primary key (TL_ID)
    );
 
@@ -94,7 +94,7 @@ create table USUARIO
    USU_APELLIDO         varchar(50),
    USU_GENERO           varchar(1) not null,
    USU_ESTUDIO          varchar(100),
-   USU_CORREO           varchar(50) not null,
+   USU_CORREO           varchar(50) not null unique,
    USU_CONTRASENA       varchar(100) not null,
    USU_NOTIFICACION     char(1),
    primary key (USR_IDENTIFICACION)
@@ -154,3 +154,5 @@ on labor.lab_id = evaluacion.lab_id inner join tipolabor
 on labor.tl_id = tipolabor.tl_id inner join periodo
 on periodo.per_id = evaluacion.per_id
 where usuario.usr_identificacion = 12345678 and eva_estado = 0
+
+Alter table tabla add constraint nombre_const unique (campo);

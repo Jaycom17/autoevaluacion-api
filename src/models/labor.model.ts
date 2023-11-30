@@ -15,10 +15,17 @@ export class Labor {
                 'INSERT INTO LABOR (tl_id,lab_nombre,lab_horas) VALUES (?,?,?)',
                 [labTypeId, labName, labTime]
             );
-            console.log(result.affectedRows); 
-            return result.affectedRows!=0;
-        } catch (error) {
-            return false;
+            if(result.affectedRows == 0){
+                return {message: 'Error al crear la labor', code: 500};
+            }
+
+            return {message: 'Labor creada con éxito', code: 201};
+
+        } catch (error:any) {
+            if(error.code == 'ER_DUP_ENTRY'){
+                return {message: 'Ya existe una labor con ese nombre', code: 500};
+            }
+            return {message: 'Error al crear la labor', code: 500};
         }
     }
 

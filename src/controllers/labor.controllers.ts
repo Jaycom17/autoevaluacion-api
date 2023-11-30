@@ -8,10 +8,10 @@ const queryString = require('querystring');
 export const createLabor = async(req: Request, res: Response) => {
     const { tl_descripcion, lab_nombre, lab_horas} = req.body;
     const labor =  await LaborModel.createLabor(tl_descripcion, lab_nombre, lab_horas);
-    if(!labor){
-        res.status(400).json({ status: 'error', message: 'Error al crear la labor' });
-    }else{
-        res.status(201).json({ status: 'ok', message: 'Labor creada correctamente' });
+    if (labor.code == 500) {
+        res.status(500).json({ status: 'error', message: labor.message });
+    } else {
+        res.status(201).json({ status: 'ok', message: labor.message });
     }
 }
 
