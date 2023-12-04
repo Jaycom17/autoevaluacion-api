@@ -9,9 +9,15 @@ export class Period {
                 'INSERT INTO periodo (per_nombre, per_fechainicio, per_fechafin) VALUES (?, ?, ?)',
                 [perName, perInitDate, perFinishDate]
             );
-            return resul.affectedRows != 0;
-        } catch (error) {
-            return null;
+            if(resul.affectedRows == 0){
+                return {message: 'Error al crear el periodo', code: 500};
+            }
+            return {message: 'Periodo creado con éxito', code: 201};
+        } catch (error:any) {
+            if(error.code == 'ER_DUP_ENTRY'){
+                return {message: 'Ya existe un periodo con ese nombre', code: 500};
+            }
+            return {message: 'Error al crear el periodo', code: 500};
         }
     }
     public async searchPeriod(perId: number) {
@@ -50,9 +56,15 @@ export class Period {
                 'UPDATE periodo SET per_nombre = ?, per_fechainicio = ?, per_fechafin = ? WHERE per_id = ?',
                 [perName, perInitDate, perFinishDate, perId]
             );
-            return resul.affectedRows != 0;
-        } catch (error) {
-            return null;
+            if(resul.affectedRows == 0){
+                return {message: 'Error al actualizar el periodo', code: 500};
+            }
+            return {message: 'Periodo actualizado con éxito', code: 201};
+        } catch (error:any) {
+            if(error.code == 'ER_DUP_ENTRY'){
+                return {message: 'Ya existe un periodo con ese nombre', code: 500};
+            }
+            return {message: 'Error al actualizar el periodo', code: 500};
         }
     }
 
