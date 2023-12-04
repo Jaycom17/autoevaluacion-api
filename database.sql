@@ -118,6 +118,20 @@ alter table USEROL add constraint FK_USEROL foreign key (USR_IDENTIFICACION)
 alter table USEROL add constraint FK_USEROL2 foreign key (ROL_ID)
       references ROL (ROL_ID) on delete restrict on update restrict;
 
+alter table tipolabor add column TL_MIN_HORAS int not null, add column TL_MAX_HORAS int not null;
+
+/*Inserts necesarios*/
+insert into tipolabor (TL_ID, TL_CODIGO, TL_DESCRIPCION, TL_MIN_HORAS, TL_MAX_HORAS) VALUES (1, 'D', 'Docencia', 20, 60);
+insert into tipolabor (TL_ID, TL_CODIGO, TL_DESCRIPCION, TL_MIN_HORAS, TL_MAX_HORAS) VALUES (2, 'TD', 'Trabajos Docencia', 20, 60);
+insert into tipolabor (TL_ID, TL_CODIGO, TL_DESCRIPCION, TL_MIN_HORAS, TL_MAX_HORAS) VALUES (3, 'PI', 'Proyectos investigación', 20, 60);
+insert into tipolabor (TL_ID, TL_CODIGO, TL_DESCRIPCION, TL_MIN_HORAS, TL_MAX_HORAS) VALUES (4, 'TI', 'Trabajos Investigación', 20, 60);
+insert into tipolabor (TL_ID, TL_CODIGO, TL_DESCRIPCION, TL_MIN_HORAS, TL_MAX_HORAS) VALUES (5, 'AD', 'Administración', 20, 160);
+insert into tipolabor (TL_ID, TL_CODIGO, TL_DESCRIPCION, TL_MIN_HORAS, TL_MAX_HORAS) VALUES (6, 'AS', 'Asesoría', 20, 60);
+insert into tipolabor (TL_ID, TL_CODIGO, TL_DESCRIPCION, TL_MIN_HORAS, TL_MAX_HORAS) VALUES (7, 'S', 'Servicios', 20, 60);
+insert into tipolabor (TL_ID, TL_CODIGO, TL_DESCRIPCION, TL_MIN_HORAS, TL_MAX_HORAS) VALUES (8, 'E', 'Extensión', 20, 60);
+insert into tipolabor (TL_ID, TL_CODIGO, TL_DESCRIPCION, TL_MIN_HORAS, TL_MAX_HORAS) VALUES (9, 'C', 'Capacitación', 20, 60);
+insert into tipolabor (TL_ID, TL_CODIGO, TL_DESCRIPCION, TL_MIN_HORAS, TL_MAX_HORAS) VALUES (10, 'OS', 'Otros Servicios', 20, 60);
+
       /*Consultas por implementar*/
       /*Promedio de puntaje por labor*/
       SELECT LABOR.LAB_ID, LABOR.LAB_NOMBRE, AVG(EVALUACION.EVA_PUNTAJE) AS PROMEDIO_PUNTAJE

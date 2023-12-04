@@ -51,6 +51,28 @@ export const showLaborList = async(_req: Request, res: Response) => {
     }
 }
 
+export const getLaborType = async(_req: Request, res: Response) => {
+    const labor =  await LaborModel.getLaborType();
+    if (labor === null) {
+        res.status(500).json({ error: 'Error al buscar el tipo de labores' });
+    } else if (labor === false) {
+        res.status(404).json({ message: 'No se encontraron tipos de labores' });
+    } else {
+        res.status(201).json(labor);
+    }
+}
+///////////////////////////////////////////////////////////////////////////////
+export const getLaborMinMaxHours = async(req: Request, res: Response) => { 
+    const labor =  await LaborModel.getLaborMinMaxHours(req.params.name);
+    if (labor === null) {
+        res.status(500).json({ error: 'Error al buscar las horas de la labor' });
+    } else if (labor === false) {
+        res.status(404).json({ message: 'Horas de labor no encontradas' });
+    } else {
+        res.status(201).json(labor);
+    }
+}
+///////////////////////////////////////////////////////////////////////////////
 export const updateLabor = async(req: Request, res: Response) => {
     const { tl_descripcion, lab_nombre, lab_horas } = req.body;
     const labor =  await LaborModel.updateLabor(parseInt(req.params.id), tl_descripcion, lab_nombre, lab_horas);

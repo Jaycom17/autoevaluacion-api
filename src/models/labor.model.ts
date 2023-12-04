@@ -1,16 +1,29 @@
 import { pool } from '../db/database'
 import { ResultSetHeader, RowDataPacket } from 'mysql2';
 
-import { laborDictionary } from '../config';
-
 export class Labor {
 
     constructor() {}
 
+    public async getLaborTypeId(tlDescripcion: string){
+        try{
+            const [row] = await pool.query<RowDataPacket[]>(
+                'select tl_id from tipolabor where tl_descripcion = ?',
+                [tlDescripcion] 
+            );
+            if(row.length == 0){
+                return false;
+            }
+            return Object.values(row[0]);
+        } catch (error){
+            return null;
+        }
+    }
+
     public async createLabor(labType: string, labName: string, labTime: number) {
         // Insertar en la tabla de datos
         try { 
-            const labTypeId = laborDictionary[labType]
+            const labTypeId = await this.getLaborTypeId(labType)
             const [result] = await pool.query<ResultSetHeader>(
                 'INSERT INTO LABOR (tl_id,lab_nombre,lab_horas) VALUES (?,?,?)',
                 [labTypeId, labName, labTime]
@@ -73,9 +86,39 @@ export class Labor {
         }
     }
 
+    public async getLaborType(){
+        try{
+            const [rows] = await pool.query<RowDataPacket[]>(
+                'select tl_descripcion from tipolabor order by tl_descripcion'
+            );
+            if(rows.length == 0){
+                return false;
+            }
+            return rows;
+        } catch (error){
+            return null;
+        }
+    }
+//////////////////////////////////////////////////////////////////////////////
+    public async getLaborMinMaxHours(tlDescripcion: string){
+        try{
+            const tlId: any = await this.getLaborTypeId(tlDescripcion);
+            const [rows] = await pool.query<RowDataPacket[]>(
+                'select tl_min_horas, tl_max_horas from tipolabor where tl_id = ?',
+                [tlId[0]]
+            );
+            if(rows.length == 0){
+                return false;
+            }
+            return rows[0];
+        } catch (error){
+            return null;
+        }
+    }
+////////////////////////////////////////////////////////////////////////////////
     public async updateLabor(labId: number, labType: string, labName: string, labTime: number){
         try {
-            const labTypeId = laborDictionary[labType]
+            const labTypeId = await this.getLaborTypeId(labType)
             const [result] = await pool.query<ResultSetHeader>(
                 'UPDATE LABOR SET TL_ID = ?, LAB_NOMBRE = ?, LAB_HORAS = ? WHERE LAB_ID = ?',
                 [labTypeId, labName, labTime, labId]

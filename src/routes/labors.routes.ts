@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { createLabor, showLaborByName, showLaborById, showLaborList, updateLabor, deleteLabor } from "../controllers/labor.controllers";
+import { createLabor, showLaborByName, showLaborById, showLaborList, getLaborType, getLaborMinMaxHours, updateLabor, deleteLabor } from "../controllers/labor.controllers";
 
 import { authCordinator } from "../middlewares/auth.middleware";
 
@@ -15,6 +15,10 @@ laborRouter.get("/labor/:id", authCordinator, showLaborById); //GetByID
 
 laborRouter.get("/labor", authCordinator, showLaborList) //GetAll
 
+laborRouter.get("/laborType", authCordinator, getLaborType) //GetLaborTypes
+//////////////////////////////////////////////////////////////////////////////////////
+laborRouter.get("/laborTypeH/:name", authCordinator, getLaborMinMaxHours) //GetLaborMinMaxHours
+//////////////////////////////////////////////////////////////////////////////////////
 laborRouter.put("/labor/:id", authCordinator, updateLabor); //Update
 
 laborRouter.delete("/labor/:id", authCordinator, deleteLabor); //Delete
