@@ -118,7 +118,7 @@ alter table USEROL add constraint FK_USEROL foreign key (USR_IDENTIFICACION)
 alter table USEROL add constraint FK_USEROL2 foreign key (ROL_ID)
       references ROL (ROL_ID) on delete restrict on update restrict;
 
-alter table tipolabor add column TL_MIN_HORAS int not null, add column TL_MAX_HORAS int not null;
+alter table tipolabor add column TL_MIN_HORAS int, add column TL_MAX_HORAS int;
 
 /*Inserts necesarios*/
 insert into tipolabor (TL_ID, TL_CODIGO, TL_DESCRIPCION, TL_MIN_HORAS, TL_MAX_HORAS) VALUES (1, 'D', 'Docencia', 20, 60);

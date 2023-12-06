@@ -78,6 +78,10 @@ export class Evaluation extends Article{
                 [evaId]
             )
 
+            if(result.affectedRows!=0){
+                this.notify("deleteEvaluation", evaId);
+            }
+
             return result.affectedRows!=0;
 
         } catch (err) {

@@ -47,6 +47,16 @@ export const getProfessors = async (_req: Request, res: Response) => {
   }
 };
 
+export const getCordinator = async (_req: Request, res: Response) => {
+  try {
+    const cordinator = await UserModel.getCordinator();
+
+    res.status(201).json(cordinator);
+  } catch (error) {
+    res.status(500).json({ error: "Error interno del servidor" });
+  }
+}
+
 export const userLogOut = async (_req: Request, res: Response) => {
   res.cookie("token", "", {
     httpOnly: true,
@@ -109,7 +119,6 @@ export const getEvaluationProffesor = async (req: Request, res: Response) => {
 
 export const deleteEvaluation = async (req: Request, res: Response) => {
   const evaId: number = parseInt(req.params.id);
-  console.log(evaId);
   const evaluation = await EvaluationModel.deleteEvaluation(evaId);
   res.json(evaluation).status(201);
 };

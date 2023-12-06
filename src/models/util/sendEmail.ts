@@ -34,7 +34,7 @@ export const sendEmailToCordinator = async (user: any) => {
       user.usu_nombre +
       " " +
       user.usu_apellido +
-      " ha creado una autoevaluación",
+      " ha realizado su autoevaluación",
     html: content,
   };
 
@@ -47,18 +47,13 @@ export const sendEmailToCordinator = async (user: any) => {
   });
 };
 
-/**
- * TODO: Enviar correo al decano
- * ! verificar que hay que enviar
- * @param user 
- */
 export const sendEmailToRector = async (user: any) => {
   let content: string =
-    "<h1>Autoevaluación</h1><br><p>El usuario " +
+    "<h1>Autoevaluación</h1><br><p>El coodinador " +
     user.usu_nombre +
     " " +
     user.usu_apellido +
-    " ha creado una autoevaluación.</p>";
+    " ha realizado su autoevaluación.</p>";
 
   let mailOptions = {
     from: EMAIL,
@@ -67,8 +62,8 @@ export const sendEmailToRector = async (user: any) => {
       user.usu_nombre +
       " " +
       user.usu_apellido +
-      " ha creado una autoevaluación",
-    text: content,
+      " ha realizado su autoevaluación",
+    html: content,
   };
 
   transporter.sendMail(mailOptions, (error, info) => {

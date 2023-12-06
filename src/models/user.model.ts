@@ -6,7 +6,7 @@ import { pool } from "../db/database";
 import { ResultSetHeader, RowDataPacket } from "mysql2";
 import { Observer } from "./observer";
 
-import { sendEmailToCordinator, sendEmailToProfessor } from "./util/sendEmail";
+import { sendEmailToCordinator, sendEmailToProfessor, sendEmailToRector } from "./util/sendEmail";
 
 export class User implements Observer {
   constructor() {}
@@ -66,6 +66,19 @@ export class User implements Observer {
     }
   }
 
+  public async getCordinator() {
+    try {
+      const [rows] = await pool.query<RowDataPacket[]>(
+        "SELECT usuario.usr_identificacion, usuario.usu_nombre, usuario.usu_apellido FROM usuario inner join userol on usuario.usr_identificacion = userol.usr_identificacion inner join rol on userol.rol_id = rol.rol_id WHERE rol.rol_descripcion = 'coordinador' order by usu_nombre, usu_apellido, usr_identificacion"
+      );
+
+      return rows[0];
+    } catch (error) {
+      console.log(error);
+      return { error: "error" };
+    }
+  }
+
   public async notify(action: string, data: any) {
     try {
       switch (action) {
@@ -88,9 +101,21 @@ export class User implements Observer {
           break;
 
         case "makeEvaluation":
-          const [rows2] = await pool.query<RowDataPacket[]>(
-            "SELECT usu_correo FROM USUARIO inner join userol on userol.usr_identificacion = usuario.usr_identificacion inner join rol on rol.rol_id = userol.rol_id where rol_descripcion = 'coordinador'"
-          );
+          let infoSend: any;
+
+          if(data.usu_rol === "coordinador"){
+            const [rows2] = await pool.query<RowDataPacket[]>(
+              "SELECT usu_correo FROM USUARIO inner join userol on userol.usr_identificacion = usuario.usr_identificacion inner join rol on rol.rol_id = userol.rol_id where rol_descripcion = 'decano'"
+            );
+            infoSend = rows2[0];
+
+
+          }else{
+            const [rows2] = await pool.query<RowDataPacket[]>(
+              "SELECT usu_correo FROM USUARIO inner join userol on userol.usr_identificacion = usuario.usr_identificacion inner join rol on rol.rol_id = userol.rol_id where rol_descripcion = 'coordinador'"
+            );
+            infoSend = rows2[0];
+          }
 
           const [rows3] = await pool.query<RowDataPacket[]>(
             "SELECT usu_nombre, usu_apellido FROM USUARIO where USR_IDENTIFICACION = ?",
@@ -102,11 +127,29 @@ export class User implements Observer {
             [data.usr_identificacion]
           );
 
-          const user = { ...rows3[0], usu_correo: rows2[0].usu_correo };
+          const user = { ...rows3[0], usu_correo: infoSend.usu_correo };
+
+          if(data.usu_rol === "coordinador"){
+            sendEmailToRector(user);
+            return;
+          }
 
           sendEmailToCordinator(user);
 
           break;
+
+          case "deleteEvaluation":
+            const [rows4] = await pool.query<RowDataPacket[]>(
+              "SELECT usr_identificacion FROM evaluacion where eva_id = ?",
+              [data]
+            );
+
+            await pool.query<ResultSetHeader>(
+              "update usuario set usu_notificacion = 'n' where usr_identificacion = ?",
+              [rows4 [0].usr_identificacion]
+            );
+
+            break;
 
         default:
           break;
