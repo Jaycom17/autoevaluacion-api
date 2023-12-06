@@ -15,7 +15,7 @@ const saveDocument_routes_1 = __importDefault(require("./routes/saveDocument.rou
 const stats_routes_1 = __importDefault(require("./routes/stats.routes"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const app = (0, express_1.default)();
-app.use((0, cors_1.default)({ origin: true, credentials: true }));
+app.use((0, cors_1.default)());
 app.use((0, cookie_parser_1.default)());
 app.use(express_1.default.json());
 app.use('/api', users_routes_1.default);
